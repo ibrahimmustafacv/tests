@@ -598,26 +598,84 @@
             height: calc(100% - 60px);
         }
 
-        .browser-url-bar {
+        /* Popup Browser Styles */
+        .popup-browser {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 85%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            z-index: 3000;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .popup-browser.active {
+            display: flex;
+        }
+
+        .popup-header {
             display: flex;
             align-items: center;
-            padding: 10px 15px;
-            background: #f1f5f9;
-            border-bottom: 1px solid #e2e8f0;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
         }
 
-        .url-input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
+        .popup-title {
+            font-weight: 600;
+            color: #374151;
             font-size: 14px;
-            background: white;
         }
 
-        .url-input:focus {
-            outline: none;
-            border-color: #667eea;
+        .popup-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .popup-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #e5e7eb;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .popup-btn:hover {
+            background: #d1d5db;
+        }
+
+        .popup-content {
+            flex: 1;
+            border: none;
+            width: 100%;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2999;
+        }
+
+        .popup-overlay.active {
+            display: block;
         }
 
         /* Footer */
@@ -658,8 +716,23 @@
             }
         }
 
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
         .slide-up {
             animation: slideUp 0.6s ease forwards;
+        }
+
+        .popup-browser.active {
+            animation: popIn 0.3s ease forwards;
         }
 
         /* Responsive Design */
@@ -701,6 +774,11 @@
             .footer {
                 margin: 20px 10px 10px;
                 padding: 30px 20px;
+            }
+
+            .popup-browser {
+                width: 95%;
+                height: 90%;
             }
         }
 
@@ -889,17 +967,26 @@
                 <span>Secure ChatGPT Pro Access</span>
             </div>
             <div class="browser-controls">
-                <button class="browser-btn" onclick="goBack()">←</button>
-                <button class="browser-btn" onclick="goForward()">→</button>
                 <button class="browser-btn" onclick="reloadEmbeddedBrowser()">↻</button>
                 <button class="browser-btn" onclick="closeEmbeddedBrowser()">✕</button>
             </div>
         </div>
-        <div class="browser-url-bar">
-            <input type="text" id="browserUrl" class="url-input" placeholder="Enter URL..." onkeypress="handleUrlKeyPress(event)">
-            <button class="browser-btn" onclick="navigateToUrl()">Go</button>
+        <iframe id="browserFrame" class="browser-content" src="about:blank"></iframe>
+    </div>
+
+    <!-- Popup Browser Overlay -->
+    <div id="popupOverlay" class="popup-overlay"></div>
+
+    <!-- Popup Browser -->
+    <div id="popupBrowser" class="popup-browser">
+        <div class="popup-header">
+            <div class="popup-title">Secure Browser</div>
+            <div class="popup-controls">
+                <button class="popup-btn" onclick="reloadPopupBrowser()">↻</button>
+                <button class="popup-btn" onclick="closePopupBrowser()">✕</button>
+            </div>
         </div>
-        <iframe id="browserFrame" class="browser-content" src="about:blank" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation"></iframe>
+        <iframe id="popupFrame" class="popup-content" src="about:blank"></iframe>
     </div>
 
     <script>
@@ -962,8 +1049,6 @@
 
         let currentProduct = null;
         let isVerifying = false;
-        let browserHistory = [];
-        let currentHistoryIndex = -1;
 
         function openModal(productId) {
             currentProduct = productId;
@@ -1115,60 +1200,23 @@
         // Embedded browser functions
         function openEmbeddedBrowser(url) {
             document.getElementById('embeddedBrowser').classList.add('active');
-            document.getElementById('browserUrl').value = url;
-            
-            // Reset history
-            browserHistory = [url];
-            currentHistoryIndex = 0;
-            
-            // Load the URL
-            loadUrlInFrame(url);
+            document.getElementById('browserFrame').src = url;
             
             // Add event listener to intercept navigation
             const frame = document.getElementById('browserFrame');
             frame.onload = function() {
                 try {
-                    // Update URL bar with current frame location
+                    // Intercept all links in the frame to open in popup
                     const frameDoc = frame.contentDocument || frame.contentWindow.document;
-                    const currentUrl = frame.contentWindow.location.href;
-                    document.getElementById('browserUrl').value = currentUrl;
-                    
-                    // Add to history if it's a new URL
-                    if (currentUrl !== browserHistory[currentHistoryIndex]) {
-                        browserHistory.push(currentUrl);
-                        currentHistoryIndex++;
-                    }
-                    
-                    // Intercept all links in the frame
                     const links = frameDoc.getElementsByTagName('a');
                     for (let i = 0; i < links.length; i++) {
                         links[i].addEventListener('click', function(e) {
                             e.preventDefault();
                             const href = this.getAttribute('href');
                             if (href) {
+                                const currentUrl = frame.contentWindow.location.href;
                                 const fullUrl = new URL(href, currentUrl).href;
-                                loadUrlInFrame(fullUrl);
-                            }
-                        });
-                    }
-                    
-                    // Intercept form submissions
-                    const forms = frameDoc.getElementsByTagName('form');
-                    for (let i = 0; i < forms.length; i++) {
-                        forms[i].addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            const formAction = this.getAttribute('action') || currentUrl;
-                            const formMethod = this.getAttribute('method') || 'GET';
-                            const formData = new FormData(this);
-                            
-                            if (formMethod.toUpperCase() === 'GET') {
-                                const urlParams = new URLSearchParams(formData);
-                                const fullUrl = formAction + '?' + urlParams.toString();
-                                loadUrlInFrame(fullUrl);
-                            } else {
-                                // For POST requests, we'll need to handle differently
-                                // This is a simplified approach
-                                loadUrlInFrame(formAction);
+                                openPopupBrowser(fullUrl);
                             }
                         });
                     }
@@ -1179,44 +1227,6 @@
             };
         }
 
-        function loadUrlInFrame(url) {
-            const frame = document.getElementById('browserFrame');
-            frame.src = url;
-            document.getElementById('browserUrl').value = url;
-        }
-
-        function navigateToUrl() {
-            const url = document.getElementById('browserUrl').value;
-            if (url) {
-                const fullUrl = url.startsWith('http') ? url : 'https://' + url;
-                loadUrlInFrame(fullUrl);
-                
-                // Add to history
-                browserHistory.push(fullUrl);
-                currentHistoryIndex = browserHistory.length - 1;
-            }
-        }
-
-        function handleUrlKeyPress(event) {
-            if (event.key === 'Enter') {
-                navigateToUrl();
-            }
-        }
-
-        function goBack() {
-            if (currentHistoryIndex > 0) {
-                currentHistoryIndex--;
-                loadUrlInFrame(browserHistory[currentHistoryIndex]);
-            }
-        }
-
-        function goForward() {
-            if (currentHistoryIndex < browserHistory.length - 1) {
-                currentHistoryIndex++;
-                loadUrlInFrame(browserHistory[currentHistoryIndex]);
-            }
-        }
-
         function reloadEmbeddedBrowser() {
             const frame = document.getElementById('browserFrame');
             frame.src = frame.src;
@@ -1225,10 +1235,54 @@
         function closeEmbeddedBrowser() {
             document.getElementById('embeddedBrowser').classList.remove('active');
             document.getElementById('browserFrame').src = 'about:blank';
-            document.getElementById('browserUrl').value = '';
-            browserHistory = [];
-            currentHistoryIndex = -1;
         }
+
+        // Popup browser functions
+        function openPopupBrowser(url) {
+            document.getElementById('popupOverlay').classList.add('active');
+            document.getElementById('popupBrowser').classList.add('active');
+            document.getElementById('popupFrame').src = url;
+            
+            // Add event listener to intercept navigation in popup
+            const popupFrame = document.getElementById('popupFrame');
+            popupFrame.onload = function() {
+                try {
+                    // Intercept all links in the popup frame to open in new popup
+                    const frameDoc = popupFrame.contentDocument || popupFrame.contentWindow.document;
+                    const links = frameDoc.getElementsByTagName('a');
+                    for (let i = 0; i < links.length; i++) {
+                        links[i].addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const href = this.getAttribute('href');
+                            if (href) {
+                                const currentUrl = popupFrame.contentWindow.location.href;
+                                const fullUrl = new URL(href, currentUrl).href;
+                                openPopupBrowser(fullUrl);
+                            }
+                        });
+                    }
+                } catch (error) {
+                    // Cross-origin restrictions may prevent access
+                    console.log('Cannot access popup frame content due to security restrictions');
+                }
+            };
+        }
+
+        function reloadPopupBrowser() {
+            const frame = document.getElementById('popupFrame');
+            frame.src = frame.src;
+        }
+
+        function closePopupBrowser() {
+            document.getElementById('popupOverlay').classList.remove('active');
+            document.getElementById('popupBrowser').classList.remove('active');
+            document.getElementById('popupFrame').src = 'about:blank';
+        }
+
+        // Close popup when clicking overlay
+        document.getElementById('popupOverlay').addEventListener('click', function() {
+            closePopupBrowser();
+        });
 
         // Close modal when clicking outside
         document.getElementById('activationModal').addEventListener('click', function(e) {
