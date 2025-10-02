@@ -1,0 +1,133 @@
+====================================================================
+        CODE STORE - PREMIUM DIGITAL ACCOUNTS
+====================================================================
+
+PROJECT OVERVIEW
+================
+A complete web application for managing premium digital account access.
+Includes activation code system, responsive design, and integration with
+SharedChat.cn platform.
+
+FILES INCLUDED
+==============
+1. standalone-index.html      - Complete standalone HTML file (READY TO USE)
+2. code-store-complete.tar.gz - Full project archive for GitHub
+3. README.md                  - Complete project documentation
+4. PROJECT-INFO.txt           - This file
+
+QUICK START OPTIONS
+===================
+
+OPTION 1: Standalone HTML (Easiest)
+------------------------------------
+- Open "standalone-index.html" in any web browser
+- No installation required
+- Works offline
+- Perfect for testing or simple deployment
+
+OPTION 2: Full React Project
+-----------------------------
+1. Extract "code-store-complete.tar.gz"
+2. Install dependencies: npm install
+3. Run development server: npm run dev
+4. Build for production: npm run build
+
+GITHUB DEPLOYMENT
+=================
+
+Method 1: Upload Archive
+------------------------
+1. Create new repository on GitHub
+2. Extract code-store-complete.tar.gz
+3. Push all files to GitHub:
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/username/repo-name.git
+   git push -u origin main
+
+Method 2: Upload Standalone HTML
+---------------------------------
+1. Create new repository on GitHub
+2. Upload standalone-index.html
+3. Rename it to index.html
+4. Enable GitHub Pages in repository settings
+
+FEATURES
+========
+✓ Modern responsive design
+✓ Activation code system
+✓ Multiple service support
+✓ SharedChat.cn integration
+✓ Mobile-friendly interface
+✓ Smooth animations
+✓ Secure code verification
+
+AVAILABLE SERVICES
+==================
+Active:
+- ChatGPT Pro ($20/month)
+
+Coming Soon:
+- ChatGPT 5
+- Canva Pro
+- Apple TV
+- Apple Music
+- Perplexity.ai
+- Coursera
+- Epic Games
+- Steam
+- Veed.io
+
+TEST ACTIVATION CODES
+=====================
+ibrahim1, ibrahim2, ibrahim3
+code123, test456
+mustafa
+you (Special - Opens SharedChat.cn directly)
+
+TECHNICAL DETAILS
+=================
+Frontend: React 18 + TypeScript
+Styling: Tailwind CSS
+Build Tool: Vite
+Font: Inter (Google Fonts)
+Icons: Unicode Emojis
+
+BROWSER SUPPORT
+===============
+✓ Chrome/Edge (latest)
+✓ Firefox (latest)
+✓ Safari (latest)
+✓ Mobile browsers
+
+DEPLOYMENT PLATFORMS
+====================
+- GitHub Pages (recommended)
+- Netlify
+- Vercel
+- Cloudflare Pages
+- Any static hosting service
+
+FILE SIZES
+==========
+standalone-index.html:     ~50 KB
+code-store-complete.tar.gz: ~50 KB
+Total project size:        ~2-3 MB (with node_modules)
+
+NOTES
+=====
+- The standalone HTML file is completely self-contained
+- No external dependencies except Google Fonts
+- All JavaScript is embedded
+- Ready for immediate deployment
+- Mobile responsive out of the box
+
+SUPPORT
+=======
+For issues or questions, please refer to the README.md file
+or open an issue in the GitHub repository.
+
+====================================================================
+© 2025 Code Store. All rights reserved.
+====================================================================
