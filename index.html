@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المكتبة السرية | Secret Library</title>
+    <meta name="description" content="مكتبة سرية تحتوي على أدوات وموارد حصرية">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Almarai:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        :root {
+            --primary-dark: #0a0a1a;
+            --secondary-dark: #12122b;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-cyan: #06b6d4;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger-red: #dc2626;
+            --success-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glow-blue: rgba(37, 99, 235, 0.3);
+            --glow-purple: rgba(124, 58, 237, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Almarai', sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+
+        /* Secret Access Overlay */
+        .secret-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-dark);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .secret-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .access-container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 40px rgba(37, 99, 235, 0.2);
+        }
+
+        .lock-icon {
+            font-size: 4rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .access-title {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .access-description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px var(--glow-blue);
+        }
+
+        .access-btn {
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .access-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .access-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .access-error {
+            color: var(--danger-red);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .notification-badge {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--success-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 1001;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Main Content */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+        }
+
+        .logo-text {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .secret-badge {
+            background: linear-gradient(to right, var(--danger-red), #9d174d);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-title {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-width: 150px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Library Sections */
+        .library-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+            border-radius: 3px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 30px var(--glow-blue);
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            gap: 1rem;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-kali {
+            background: linear-gradient(to right, #557C94, #2F4F4F);
+        }
+
+        .icon-tools {
+            background: linear-gradient(to right, var(--warning-yellow), #D97706);
+        }
+
+        .icon-phishing {
+            background: linear-gradient(to right, var(--danger-red), #9d174d);
+        }
+
+        .icon-password {
+            background: linear-gradient(to right, var(--success-green), #059669);
+        }
+
+        .icon-encryption {
+            background: linear-gradient(to right, var(--accent-purple), #6D28D9);
+        }
+
+        .icon-id {
+            background: linear-gradient(to right, var(--accent-cyan), #0891B2);
+        }
+
+        .category-name {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .category-description {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .subcategories {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-card.active .subcategories {
+            max-height: 800px;
+            margin-bottom: 2.5rem;
+        }
+
+        .subcategory-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .subcategory-item:hover {
+            background: rgba(37, 99, 235, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .subcategory-name {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .subcategory-icon {
+            font-size: 0.9rem;
+        }
+
+        .open-link {
+            color: var(--accent-blue);
+            background: rgba(37, 99, 235, 0.1);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .open-link:hover {
+            background: rgba(37, 99, 235, 0.2);
+            transform: scale(1.1);
+        }
+
+        .expand-btn {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-light);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-card.active .expand-btn {
+            transform: translateX(-50%) rotate(180deg);
+            background: rgba(37, 99, 235, 0.2);
+        }
+
+        .expand-btn:hover {
+            background: rgba(37, 99, 235, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .footer-heart {
+            color: var(--danger-red);
+        }
+
+        .security-notice {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .security-icon {
+            color: var(--danger-red);
+            font-size: 1.2rem;
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(37, 99, 235, 0.2);
+            border-radius: 50%;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes successGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-card.active .subcategories {
+                max-height: 1000px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-purple);
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Badge -->
+    <div class="notification-badge" id="notificationBadge">
+        <i class="fas fa-bell"></i>
+        <span>تم إرسال إشعار للمسؤول</span>
+    </div>
+
+    <!-- Secret Access Overlay -->
+    <div class="secret-overlay" id="secretOverlay">
+        <div class="access-container animate__animated animate__fadeIn">
+            <div class="lock-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h1 class="access-title">المكتبة السرية</h1>
+            <p class="access-description">
+                هذا المحتوى سري وحصري. أدخل كلمة المرور الصحيحة للوصول إلى المكتبة.
+            </p>
+            <input type="password" class="password-input" id="passwordInput" placeholder="أدخل كلمة المرور السرية">
+            <button class="access-btn" id="accessBtn">الوصول إلى المكتبة</button>
+            <p class="access-error" id="accessError">كلمة المرور غير صحيحة. حاول مرة أخرى.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-container">
+                <div class="logo">
+                    <i class="fas fa-book logo-icon"></i>
+                    <h1 class="logo-text">المكتبة السرية</h1>
+                </div>
+                <div class="secret-badge">
+                    <i class="fas fa-user-secret"></i>
+                    <span>سري للغاية</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <h1 class="hero-title animate__animated animate__fadeInDown">أرشيف المعرفة السرية</h1>
+            <p class="hero-subtitle animate__animated animate__fadeInUp">
+                مكتبة حصرية تحتوي على أدوات متقدمة، موارد أمنية، ومعلومات قيمة لا تتوفر سوى هنا.
+            </p>
+            
+            <div class="stats animate__animated animate__fadeInUp">
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">أقسام رئيسية</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">مورد سري</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">خصوصية مضمونة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Library Sections -->
+        <div class="library-container">
+            <h2 class="section-title">أقسام المكتبة</h2>
+            
+            <div class="categories-grid">
+                <!-- Kali Linux Section -->
+                <div class="category-card" data-category="kali">
+                    <div class="category-header">
+                        <div class="category-icon icon-kali">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <h3 class="category-name">Kali Linux</h3>
+                    </div>
+                    <p class="category-description">
+                        موارد وتوزيعات Kali Linux المتخصصة في الاختبارات الأمنية والاختراق الأخلاقي.
+                    </p>
+                    
+                    <div class="subcategories">
+                        <div class="subcategory-item" data-link="https://drive.google.com/drive/folders/15p5lQyJGir4mpr2LRTO20R6_YI4xzDVR?usp=sharing">
+                            <div class="subcategory-name">
+                                <i class="fas fa-folder subcategory-icon"></i>
+                                <span>مجلد Kali Linux</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="expand-btn">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <!-- Tools Section -->
+                <div class="category-card" data-category="tools">
+                    <div class="category-header">
+                        <div class="category-icon icon-tools">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="category-name">الأدوات</h3>
+                    </div>
+                    <p class="category-description">
+                        مجموعة من الأدوات المتقدمة للاختبارات الأمنية وتحليل الشبكات والأنظمة.
+                    </p>
+                    
+                    <div class="subcategories">
+                        <div class="subcategory-item" data-link="https://drive.google.com/drive/folders/1Zx7ylMY59CUW8zeMTZAO9uA0j8YPpj_C?usp=sharing">
+                            <div class="subcategory-name">
+                                <i class="fas fa-wrench subcategory-icon"></i>
+                                <span>أدوات Kali</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div class="subcategory-item" data-link="https://drive.google.com/drive/folders/1h8-jFbASEi6r1E3pRTbzqIjqf-C2KZME?usp=sharing">
+                            <div class="subcategory-name">
+                                <i class="fas fa-wifi subcategory-icon"></i>
+                                <span>WiFi WPS</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="expand-btn">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <!-- Phishing Section -->
+                <div class="category-card" data-category="phishing">
+                    <div class="category-header">
+                        <div class="category-icon icon-phishing">
+                            <i class="fas fa-fish"></i>
+                        </div>
+                        <h3 class="category-name">التصيد الاحتيالي</h3>
+                    </div>
+                    <p class="category-description">
+                        موارد وأدوات متعلقة بالتصيد الاحتيالي للاختبارات الأمنية والتوعية.
+                    </p>
+                    
+                    <div class="subcategories">
+                        <div class="subcategory-item" data-link="https://cliker.vip/Account/Main">
+                            <div class="subcategory-name">
+                                <i class="fas fa-mouse-pointer subcategory-icon"></i>
+                                <span>cliker.vip</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="expand-btn">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <!-- Password Section -->
+                <div class="category-card" data-category="password">
+                    <div class="category-header">
+                        <div class="category-icon icon-password">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3 class="category-name">كلمات المرور</h3>
+                    </div>
+                    <p class="category-description">
+                        أدوات إنشاء كلمات مرور قوية وقوائم كلمات مرور للاختبارات الأمنية.
+                    </p>
+                    
+                    <div class="subcategories">
+                        <div class="subcategory-item" data-link="https://ibrahimmustafacv.github.io/password/">
+                            <div class="subcategory-name">
+                                <i class="fas fa-lock subcategory-icon"></i>
+                                <span>Your Password in Your Pocket</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div class="subcategory-item" data-link="https://drive.google.com/drive/folders/1VY4E7b9b7Ht0eWl6Z4LX3kLckauVoIF9?usp=sharing">
+                            <div class="subcategory-name">
+                                <i class="fas fa-list subcategory-icon"></i>
+                                <span>قائمة كلمات المرور</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="expand-btn">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <!-- Encryption Section -->
+                <div class="category-card" data-category="encryption">
+                    <div class="category-header">
+                        <div class="category-icon icon-encryption">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="category-name">التشفير</h3>
+                    </div>
+                    <p class="category-description">
+                        أدوات تحويل وتشفير البيانات لحماية المعلومات والاتصالات.
+                    </p>
+                    
+                    <div class="subcategories">
+                        <div class="subcategory-item" data-link="https://ibrahimmustafacv.github.io/Encryption/">
+                            <div class="subcategory-name">
+                                <i class="fas fa-exchange-alt subcategory-icon"></i>
+                                <span>محول التشفير</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="expand-btn">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <!-- ID Section -->
+                <div class="category-card" data-category="id">
+                    <div class="category-header">
+                        <div class="category-icon icon-id">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3 class="category-name">الهويات والبيانات</h3>
+                    </div>
+                    <p class="category-description">
+                        موارد لإنشاء هويات وبيانات وهمية للاختبارات والتطوير.
+                    </p>
+                    
+                    <div class="subcategories">
+                        <div class="subcategory-item" data-link="https://temporary-phone-number.com/">
+                            <div class="subcategory-name">
+                                <i class="fas fa-phone subcategory-icon"></i>
+                                <span>أرقام هاتف وهمية</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div class="subcategory-item" data-link="https://ibrahimmustafacv.github.io/fake-data/">
+                            <div class="subcategory-name">
+                                <i class="fas fa-database subcategory-icon"></i>
+                                <span>بيانات وهمية</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div class="subcategory-item" data-link="https://drive.google.com/drive/folders/1fdM1ly9rZ0qomwROB_7R-ym0UwuC4cOw?usp=sharing">
+                            <div class="subcategory-name">
+                                <i class="fas fa-id-badge subcategory-icon"></i>
+                                <span>هويات</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div class="subcategory-item" data-link="https://drive.google.com/drive/folders/1mYy5ceCLgZRUB5pSvL3PLUmibXgXR0EA?usp=sharing">
+                            <div class="subcategory-name">
+                                <i class="fas fa-images subcategory-icon"></i>
+                                <span>صور أشخاص بأسماء</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div class="subcategory-item" data-link="https://neapay.com/online-tools/credit-card-number-generator-validator.html">
+                            <div class="subcategory-name">
+                                <i class="fas fa-credit-card subcategory-icon"></i>
+                                <span>بطاقات فيزا وهمية</span>
+                            </div>
+                            <button class="open-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="expand-btn">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <p class="footer-text">
+                    تم التطوير بعناية بواسطة Ibrahim Mustafa <i class="fas fa-heart footer-heart"></i> | المكتبة السرية © 2024
+                </p>
+                
+                <div class="security-notice">
+                    <i class="fas fa-shield-alt security-icon"></i>
+                    <p>هذا الموقع محمي ومراقب. أي محاولة للوصول غير المصرح به ستسجل.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <script>
+        // ==================== إعدادات Telegram Bot ====================
+        const TELEGRAM_CONFIG = {
+            botToken: "8465833487:AAGBXlVkMUSlvdCHvIi5LNIZ1LYakMZ3-eQ",
+            chatId: "848066586", // تم الحصول عليه من النتائج
+            enabled: true
+        };
+
+        // ==================== المتغيرات الأساسية ====================
+        const secretOverlay = document.getElementById('secretOverlay');
+        const mainContent = document.getElementById('mainContent');
+        const passwordInput = document.getElementById('passwordInput');
+        const accessBtn = document.getElementById('accessBtn');
+        const accessError = document.getElementById('accessError');
+        const notificationBadge = document.getElementById('notificationBadge');
+        
+        // كلمة المرور الصحيحة
+        const correctPassword = "memo.48522844me*#Aa48Eesyk";
+        
+        // عداد لمحاولات الدخول الخاطئة
+        let failedAttempts = 0;
+        
+        // ==================== دالة إرسال الإشعارات إلى Telegram ====================
+        async function sendNotification(enteredPassword, userInfo) {
+            try {
+                failedAttempts++;
+                
+                // إظهار كلمة المرور كاملة
+                const maskedPassword = enteredPassword || '(لم يتم إدخال كلمة مرور)';
+                
+                const message = `🚨 *محاولة دخول فاشلة إلى المكتبة السرية!*
+                
+🔐 *كلمة المرور المدخلة:* \`${maskedPassword}\`
+🔄 *عدد المحاولات الفاشلة:* ${failedAttempts}
+🕒 *الوقت:* ${new Date().toLocaleString('ar-SA')}
+🌐 *المتصفح:* ${userInfo.browser}
+📍 *الصفحة:* ${userInfo.pageUrl}
+📱 *النظام:* ${userInfo.platform}
+📶 *الشاشة:* ${userInfo.screenSize}
+                
+⚠️ *تنبيه أمني:* تم تسجيل هذه المحاولة.`;
+                
+                const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CONFIG.chatId,
+                        text: message,
+                        parse_mode: 'Markdown',
+                        disable_web_page_preview: true
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.ok) {
+                    showNotificationBadge();
+                    console.log('✅ تم إرسال الإشعار إلى Telegram بنجاح!');
+                    return true;
+                } else {
+                    console.error("❌ خطأ في إرسال الإشعار:", data);
+                    return false;
+                }
+            } catch (error) {
+                console.error("❌ خطأ في إرسال إشعار Telegram:", error);
+                return false;
+            }
+        }
+        
+        // ==================== عرض إشعار محلي ====================
+        function showNotificationBadge() {
+            notificationBadge.style.display = 'flex';
+            setTimeout(() => {
+                notificationBadge.style.display = 'none';
+            }, 3000);
+        }
+        
+        // ==================== جمع معلومات المستخدم ====================
+        function getUserInfo() {
+            return {
+                browser: getBrowserName(),
+                pageUrl: window.location.href,
+                platform: navigator.platform,
+                screenSize: `${window.screen.width}x${window.screen.height}`,
+                language: navigator.language,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                userAgent: navigator.userAgent.substring(0, 100)
+            };
+        }
+        
+        // ==================== تحديد اسم المتصفح ====================
+        function getBrowserName() {
+            const userAgent = navigator.userAgent;
+            if (userAgent.includes("Chrome")) return "Google Chrome";
+            if (userAgent.includes("Firefox")) return "Mozilla Firefox";
+            if (userAgent.includes("Safari")) return "Apple Safari";
+            if (userAgent.includes("Edge")) return "Microsoft Edge";
+            if (userAgent.includes("Opera")) return "Opera";
+            return "متصفح غير معروف";
+        }
+        
+        // ==================== دالة التحقق من كلمة المرور ====================
+        async function checkPassword() {
+            const enteredPassword = passwordInput.value.trim();
+            const userInfo = getUserInfo();
+            
+            if (enteredPassword === correctPassword) {
+                // النجاح
+                secretOverlay.classList.add('hidden');
+                accessBtn.style.animation = "successGlow 1s ease-in-out";
+                accessBtn.style.background = "linear-gradient(to right, var(--success-green), #059669)";
+                
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                    createParticles();
+                }, 500);
+                
+                playAccessSound();
+                
+                // إعادة تعيين العداد عند النجاح
+                failedAttempts = 0;
+                
+            } else {
+                // الفشل
+                accessError.style.display = 'block';
+                passwordInput.style.borderColor = 'var(--danger-red)';
+                passwordInput.style.boxShadow = '0 0 20px rgba(220, 38, 38, 0.3)';
+                
+                // إرسال إشعار إلى Telegram
+                if (TELEGRAM_CONFIG.enabled) {
+                    await sendNotification(enteredPassword, userInfo);
+                }
+                
+                // اهتزاز
+                secretOverlay.classList.remove('animate__fadeIn');
+                secretOverlay.classList.add('animate__shakeX');
+                setTimeout(() => {
+                    secretOverlay.classList.remove('animate__shakeX');
+                    secretOverlay.classList.add('animate__fadeIn');
+                }, 500);
+                
+                // تفريغ الحقل
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+        
+        // ==================== Event listeners ====================
+        accessBtn.addEventListener('click', checkPassword);
+        
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // ==================== مؤثرات صوتية ====================
+        function playAccessSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log("Audio context not supported");
+            }
+        }
+        
+        // ==================== وظائف البطاقات ====================
+        document.querySelectorAll('.category-card').forEach(card => {
+            const expandBtn = card.querySelector('.expand-btn');
+            const categoryIcon = card.querySelector('.category-icon');
+            
+            // Add hover effect to category icons
+            card.addEventListener('mouseenter', () => {
+                categoryIcon.style.transform = 'scale(1.1) rotate(5deg)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                categoryIcon.style.transform = 'scale(1) rotate(0deg)';
+            });
+            
+            expandBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                const isActive = card.classList.contains('active');
+                
+                document.querySelectorAll('.category-card').forEach(otherCard => {
+                    if (otherCard !== card) {
+                        otherCard.classList.remove('active');
+                    }
+                });
+                
+                if (!isActive) {
+                    card.classList.add('active');
+                    playCardOpenSound();
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+            
+            // Open links in subcategories
+            card.querySelectorAll('.open-link').forEach(linkBtn => {
+                linkBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const link = linkBtn.closest('.subcategory-item').getAttribute('data-link');
+                    window.open(link, '_blank');
+                    playClickSound();
+                });
+            });
+            
+            // Open link when clicking on subcategory item
+            card.querySelectorAll('.subcategory-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (!e.target.closest('.open-link')) {
+                        const link = item.getAttribute('data-link');
+                        window.open(link, '_blank');
+                        playClickSound();
+                    }
+                });
+            });
+        });
+        
+        function playCardOpenSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 600;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log("Audio context not supported");
+            }
+        }
+        
+        function playClickSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 400;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (e) {
+                console.log("Audio context not supported");
+            }
+        }
+        
+        // ==================== الجسيمات العائمة ====================
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 5 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const color = Math.random() > 0.5 ? 'rgba(37, 99, 235, 0.2)' : 'rgba(124, 58, 237, 0.2)';
+                const delay = Math.random() * 10;
+                const duration = Math.random() * 20 + 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.background = color;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // ==================== عند تحميل الصفحة ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus on password input
+            passwordInput.focus();
+            
+            // عرض رسالة ترحيب في الكونسول
+            console.log(`
+            🎉 **المكتبة السرية جاهزة للعمل!**
+            
+            ✅ بوت Telegram مفعّل: @mSecretLibraryBot
+            ✅ chat_id: 848066586
+            ✅ سيتم إرسال إشعارات فورية عند محاولات الدخول الخاطئة
+            
+            🔧 للإيقاف المؤقت: اضبط enabled: false في TELEGRAM_CONFIG
+            🔒 كلمة المرور الصحيحة: ${correctPassword}
+            `);
+            
+            // Add keyboard shortcut for password input (Ctrl+Enter)
+            passwordInput.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            
+            // Add subtle animation to stats on hover
+            const statItems = document.querySelectorAll('.stat-item');
+            statItems.forEach(stat => {
+                stat.addEventListener('mouseenter', () => {
+                    const number = stat.querySelector('.stat-number');
+                    number.style.transform = 'scale(1.1)';
+                    number.style.transition = 'transform 0.3s ease';
+                });
+                
+                stat.addEventListener('mouseleave', () => {
+                    const number = stat.querySelector('.stat-number');
+                    number.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
