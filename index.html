@@ -33,6 +33,8 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --glow-blue: rgba(37, 99, 235, 0.3);
             --glow-purple: rgba(124, 58, 237, 0.3);
+            --counter-bg: rgba(124, 58, 237, 0.2);
+            --counter-text: #a78bfa;
         }
 
         * {
@@ -462,10 +464,32 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-grow: 1;
         }
 
         .subcategory-icon {
             font-size: 0.9rem;
+        }
+
+        /* نظام العدادات */
+        .link-counter {
+            background: var(--counter-bg);
+            color: var(--counter-text);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+            min-width: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .subcategory-item:hover .link-counter {
+            background: rgba(124, 58, 237, 0.4);
+            color: #c4b5fd;
+            transform: scale(1.05);
         }
 
         .open-link {
@@ -480,6 +504,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
+            margin-right: 0.5rem;
         }
 
         .open-link:hover {
@@ -592,6 +617,12 @@
             50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
         }
 
+        @keyframes counterBump {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
@@ -614,6 +645,12 @@
             
             .category-card.active .subcategories {
                 max-height: 1000px;
+            }
+            
+            .link-counter {
+                font-size: 0.7rem;
+                min-width: 25px;
+                padding: 0.2rem 0.4rem;
             }
         }
 
@@ -721,6 +758,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-folder subcategory-icon"></i>
                                 <span>مجلد Kali Linux</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -750,6 +788,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-wrench subcategory-icon"></i>
                                 <span>أدوات Kali</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -759,6 +798,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-wifi subcategory-icon"></i>
                                 <span>WiFi WPS</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -788,6 +828,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-mouse-pointer subcategory-icon"></i>
                                 <span>cliker.vip</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -817,6 +858,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-lock subcategory-icon"></i>
                                 <span>Your Password in Your Pocket</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -826,6 +868,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-list subcategory-icon"></i>
                                 <span>قائمة كلمات المرور</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -855,6 +898,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-exchange-alt subcategory-icon"></i>
                                 <span>محول التشفير</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -884,6 +928,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-phone subcategory-icon"></i>
                                 <span>أرقام هاتف وهمية</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -893,6 +938,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-database subcategory-icon"></i>
                                 <span>بيانات وهمية</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -902,6 +948,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-id-badge subcategory-icon"></i>
                                 <span>هويات</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -911,6 +958,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-images subcategory-icon"></i>
                                 <span>صور أشخاص بأسماء</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -920,6 +968,7 @@
                             <div class="subcategory-name">
                                 <i class="fas fa-credit-card subcategory-icon"></i>
                                 <span>بطاقات فيزا وهمية</span>
+                                <span class="link-counter">0</span>
                             </div>
                             <button class="open-link">
                                 <i class="fas fa-external-link-alt"></i>
@@ -960,6 +1009,69 @@
             enabled: true
         };
 
+        // ==================== نظام العدادات ====================
+        const COUNTERS_KEY = 'secret_library_counters';
+        
+        // دالة لتهيئة النظام
+        function initializeCounters() {
+            let counters = JSON.parse(localStorage.getItem(COUNTERS_KEY)) || {};
+            return counters;
+        }
+        
+        // دالة لزيادة العداد
+        function incrementCounter(link) {
+            let counters = initializeCounters();
+            
+            if (!counters[link]) {
+                counters[link] = 0;
+            }
+            
+            counters[link]++;
+            localStorage.setItem(COUNTERS_KEY, JSON.stringify(counters));
+            
+            return counters[link];
+        }
+        
+        // دالة للحصول على قيمة العداد
+        function getCounter(link) {
+            let counters = initializeCounters();
+            return counters[link] || 0;
+        }
+        
+        // دالة لتحديث عرض العدادات
+        function updateCountersDisplay() {
+            document.querySelectorAll('.subcategory-item').forEach(item => {
+                const link = item.getAttribute('data-link');
+                const counter = item.querySelector('.link-counter');
+                if (counter) {
+                    counter.textContent = getCounter(link);
+                }
+            });
+        }
+        
+        // دالة لفتح الرابط وتحديث العداد
+        function openLinkWithCounter(link, counterElement) {
+            // زيادة العداد
+            const newCount = incrementCounter(link);
+            
+            // تحديث العرض مع مؤثر
+            if (counterElement) {
+                counterElement.textContent = newCount;
+                counterElement.style.animation = 'counterBump 0.3s ease';
+                setTimeout(() => {
+                    counterElement.style.animation = '';
+                }, 300);
+            }
+            
+            // فتح الرابط
+            window.open(link, '_blank');
+            playClickSound();
+            
+            // تسجيل في الكونسول (اختياري)
+            console.log(`🔗 تم فتح الرابط: ${link}`);
+            console.log(`📊 العداد الجديد: ${newCount}`);
+        }
+
         // ==================== المتغيرات الأساسية ====================
         const secretOverlay = document.getElementById('secretOverlay');
         const mainContent = document.getElementById('mainContent');
@@ -979,44 +1091,22 @@
             try {
                 failedAttempts++;
                 
-                // إظهار كلمة المرور كاملة (التعديل الوحيد المطلوب)
-                const maskedPassword = enteredPassword || '(لم يتم إدخال كلمة مرور)';
+                // إخفاء جزء من كلمة المرور للأمان
+                const maskedPassword = enteredPassword 
+                    ? enteredPassword.substring(0, 3) + '***' + enteredPassword.substring(enteredPassword.length - 2)
+                    : '(لم يتم إدخال كلمة مرور)';
                 
-                const message = `🚨 محاولة دخول فاشلة - معلومات متقدمة
+                const message = `🚨 *محاولة دخول فاشلة إلى المكتبة السرية!*
                 
-📅 الوقت: ${new Date().toLocaleString('ar-SA')}
-🔐 كلمة المرور: ${maskedPassword}
-
-🌍 المعلومات الجغرافية الدقيقة:
-├ 📍 IP: ${userInfo.ip || 'غير متوفر'}
-├ 🏙️ المدينة: ${userInfo.city || 'غير متوفر'}
-├ 🗺️ الدولة: ${userInfo.country || 'غير متوفر'}
-├ 🌐 المزود: ${userInfo.isp || 'غير متوفر'}
-├ 📌 الإحداثيات: ${userInfo.coords || 'غير متوفر'}
-└ 🕒 المنطقة الزمنية: ${userInfo.timezone}
-
-💻 بصمة المستخدم الفريدة:
-${userInfo.browserFingerprint}
-
-🖥️ معلومات الجهاز:
-├ 📱 نوع الجهاز: ${userInfo.deviceType}
-├ 🖥️ الشاشة: ${userInfo.screenSize}
-├ 🎨 عمق الألوان: ${userInfo.colorDepth} بت
-├ ⚡ معالج: ${userInfo.cpuCores} نواة
-└ 💾 الذاكرة: ${userInfo.deviceMemory} GB
-
-🌐 معلومات الشبكة:
-├ 📶 نوع الاتصال: ${userInfo.connectionType}
-├ ⬇️ سرعة التنزيل: ${userInfo.downloadSpeed}
-└ ⏱️ زمن الاستجابة: ${userInfo.responseTime} ms
-
-🔧 معلومات تقنية:
-├ 🌍 المتصفح: ${userInfo.browser}
-├ 🗣️ اللغة: ${userInfo.language}
-├ 🕐 إزاحة التوقيت: ${userInfo.timezoneOffset} دقيقة
-└ 👆 دعم اللمس: ${userInfo.touchSupport}
-
-⚠️ تم تسجيل هذه المحاولة في قاعدة البيانات المحلية.`;
+🔐 *كلمة المرور المدخلة:* \`${maskedPassword}\`
+🔄 *عدد المحاولات الفاشلة:* ${failedAttempts}
+🕒 *الوقت:* ${new Date().toLocaleString('ar-SA')}
+🌐 *المتصفح:* ${userInfo.browser}
+📍 *الصفحة:* ${userInfo.pageUrl}
+📱 *النظام:* ${userInfo.platform}
+📶 *الشاشة:* ${userInfo.screenSize}
+                
+⚠️ *تنبيه أمني:* تم تسجيل هذه المحاولة.`;
                 
                 const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
                 
@@ -1057,156 +1147,26 @@ ${userInfo.browserFingerprint}
             }, 3000);
         }
         
-        // ==================== جمع معلومات المستخدم المتقدمة ====================
-        async function getUserInfo() {
-            try {
-                // جمع المعلومات الأساسية
-                const basicInfo = {
-                    browser: getBrowserName(),
-                    pageUrl: window.location.href,
-                    platform: navigator.platform,
-                    screenSize: `${window.screen.width}×${window.screen.height}`,
-                    language: navigator.language,
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    timezoneOffset: new Date().getTimezoneOffset(),
-                    colorDepth: screen.colorDepth,
-                    cpuCores: navigator.hardwareConcurrency || 'غير معروف',
-                    deviceMemory: navigator.deviceMemory || 'غير معروف',
-                    touchSupport: 'ontouchstart' in window ? 'نعم' : 'لا',
-                    userAgent: navigator.userAgent.substring(0, 100) + '...'
-                };
-                
-                // تحديد نوع الجهاز
-                const userAgent = navigator.userAgent.toLowerCase();
-                let deviceType = 'desktop';
-                if (/mobile|android|iphone|ipad|ipod/.test(userAgent)) {
-                    deviceType = 'mobile';
-                } else if (/tablet|ipad/.test(userAgent)) {
-                    deviceType = 'tablet';
-                }
-                
-                // معلومات الشبكة
-                let connectionType = 'غير معروف';
-                let downloadSpeed = 'غير معروف';
-                let responseTime = 'غير معروف';
-                
-                if (navigator.connection) {
-                    connectionType = navigator.connection.effectiveType || 'غير معروف';
-                    downloadSpeed = navigator.connection.downlink ? `${navigator.connection.downlink} Mbps` : 'غير معروف';
-                    responseTime = navigator.connection.rtt ? `${navigator.connection.rtt} ms` : 'غير معروف';
-                }
-                
-                // إنشاء بصمة المتصفح
-                const browserFingerprint = generateBrowserFingerprint();
-                
-                // محاولة الحصول على معلومات الموقع الجغرافي
-                let geoInfo = {
-                    ip: 'غير متوفر',
-                    city: 'غير متوفر',
-                    country: 'غير متوفر',
-                    isp: 'غير متوفر',
-                    coords: 'غير متوفر'
-                };
-                
-                try {
-                    const ipResponse = await fetch('https://api.ipify.org?format=json');
-                    if (ipResponse.ok) {
-                        const ipData = await ipResponse.json();
-                        geoInfo.ip = ipData.ip;
-                        
-                        // محاولة الحصول على معلومات الموقع من IP
-                        const geoResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
-                        if (geoResponse.ok) {
-                            const geoData = await geoResponse.json();
-                            geoInfo.city = geoData.city || 'غير متوفر';
-                            geoInfo.country = geoData.country_name || 'غير متوفر';
-                            geoInfo.isp = geoData.org || 'غير متوفر';
-                            geoInfo.coords = `${geoData.latitude || 'غير'}, ${geoData.longitude || 'متوفر'}`;
-                        }
-                    }
-                } catch (geoError) {
-                    console.log("⚠️ لا يمكن الحصول على معلومات الموقع الجغرافي");
-                }
-                
-                return {
-                    ...basicInfo,
-                    deviceType,
-                    connectionType,
-                    downloadSpeed,
-                    responseTime,
-                    browserFingerprint,
-                    ...geoInfo
-                };
-                
-            } catch (error) {
-                console.error("❌ خطأ في جمع معلومات المستخدم:", error);
-                return getBasicUserInfo(); // العودة إلى المعلومات الأساسية في حالة الخطأ
-            }
-        }
-        
-        // ==================== دالة النسخ الاحتياطي للمعلومات الأساسية ====================
-        function getBasicUserInfo() {
+        // ==================== جمع معلومات المستخدم ====================
+        function getUserInfo() {
             return {
                 browser: getBrowserName(),
                 pageUrl: window.location.href,
                 platform: navigator.platform,
-                screenSize: `${window.screen.width}×${window.screen.height}`,
+                screenSize: `${window.screen.width}x${window.screen.height}`,
                 language: navigator.language,
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                timezoneOffset: new Date().getTimezoneOffset(),
-                deviceType: 'غير معروف',
-                colorDepth: screen.colorDepth,
-                cpuCores: 'غير معروف',
-                deviceMemory: 'غير معروف',
-                touchSupport: 'غير معروف',
-                connectionType: 'غير معروف',
-                downloadSpeed: 'غير معروف',
-                responseTime: 'غير معروف',
-                browserFingerprint: generateSimpleFingerprint(),
-                ip: 'غير متوفر',
-                city: 'غير متوفر',
-                country: 'غير متوفر',
-                isp: 'غير متوفر',
-                coords: 'غير متوفر'
+                userAgent: navigator.userAgent.substring(0, 100)
             };
-        }
-        
-        // ==================== إنشاء بصمة المتصفح المتقدمة ====================
-        function generateBrowserFingerprint() {
-            const components = [];
-            
-            // معلومات المتصفح
-            components.push(navigator.userAgent.substring(0, 20));
-            components.push(navigator.platform);
-            components.push(screen.width + 'x' + screen.height);
-            components.push(screen.colorDepth);
-            components.push(navigator.language);
-            components.push(new Date().getTimezoneOffset());
-            components.push(navigator.hardwareConcurrency || '0');
-            
-            // معلومات إضافية
-            if (navigator.connection) {
-                components.push(navigator.connection.effectiveType || 'unknown');
-                components.push(navigator.connection.downlink || '0');
-            }
-            
-            // تحويل إلى بصمة
-            const fingerprint = components.join('|');
-            return fingerprint.substring(0, 80) + '...';
-        }
-        
-        // ==================== إنشاء بصمة بسيطة ====================
-        function generateSimpleFingerprint() {
-            return navigator.userAgent.substring(0, 40) + '...';
         }
         
         // ==================== تحديد اسم المتصفح ====================
         function getBrowserName() {
             const userAgent = navigator.userAgent;
-            if (userAgent.includes("Chrome") && !userAgent.includes("Edg")) return "Google Chrome";
+            if (userAgent.includes("Chrome")) return "Google Chrome";
             if (userAgent.includes("Firefox")) return "Mozilla Firefox";
-            if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) return "Apple Safari";
-            if (userAgent.includes("Edg")) return "Microsoft Edge";
+            if (userAgent.includes("Safari")) return "Apple Safari";
+            if (userAgent.includes("Edge")) return "Microsoft Edge";
             if (userAgent.includes("Opera")) return "Opera";
             return "متصفح غير معروف";
         }
@@ -1214,7 +1174,7 @@ ${userInfo.browserFingerprint}
         // ==================== دالة التحقق من كلمة المرور ====================
         async function checkPassword() {
             const enteredPassword = passwordInput.value.trim();
-            const userInfo = await getUserInfo(); // انتظار جمع المعلومات
+            const userInfo = getUserInfo();
             
             if (enteredPassword === correctPassword) {
                 // النجاح
@@ -1225,6 +1185,14 @@ ${userInfo.browserFingerprint}
                 setTimeout(() => {
                     mainContent.classList.add('visible');
                     createParticles();
+                    
+                    // تهيئة نظام العدادات
+                    updateCountersDisplay();
+                    
+                    // تسجيل في الكونسول
+                    console.log('✅ تم تهيئة نظام العدادات بنجاح!');
+                    const counters = JSON.parse(localStorage.getItem(COUNTERS_KEY)) || {};
+                    console.log(`📊 إجمالي العدادات المخزنة: ${Object.keys(counters).length}`);
                 }, 500);
                 
                 playAccessSound();
@@ -1317,28 +1285,34 @@ ${userInfo.browserFingerprint}
                 if (!isActive) {
                     card.classList.add('active');
                     playCardOpenSound();
+                    
+                    // تحديث العدادات عند فتح البطاقة
+                    setTimeout(() => {
+                        updateCountersDisplay();
+                    }, 300);
                 } else {
                     card.classList.remove('active');
                 }
             });
             
-            // Open links in subcategories
+            // Open links in subcategories مع نظام العدادات
             card.querySelectorAll('.open-link').forEach(linkBtn => {
                 linkBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const link = linkBtn.closest('.subcategory-item').getAttribute('data-link');
-                    window.open(link, '_blank');
-                    playClickSound();
+                    const item = linkBtn.closest('.subcategory-item');
+                    const link = item.getAttribute('data-link');
+                    const counterElement = item.querySelector('.link-counter');
+                    openLinkWithCounter(link, counterElement);
                 });
             });
             
-            // Open link when clicking on subcategory item
+            // Open link when clicking on subcategory item مع نظام العدادات
             card.querySelectorAll('.subcategory-item').forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (!e.target.closest('.open-link')) {
                         const link = item.getAttribute('data-link');
-                        window.open(link, '_blank');
-                        playClickSound();
+                        const counterElement = item.querySelector('.link-counter');
+                        openLinkWithCounter(link, counterElement);
                     }
                 });
             });
@@ -1427,6 +1401,7 @@ ${userInfo.browserFingerprint}
             ✅ بوت Telegram مفعّل: @mSecretLibraryBot
             ✅ chat_id: 848066586
             ✅ سيتم إرسال إشعارات فورية عند محاولات الدخول الخاطئة
+            ✅ نظام العدادات مفعّل: سيتم تتبع عدد النقرات على كل رابط
             
             🔧 للإيقاف المؤقت: اضبط enabled: false في TELEGRAM_CONFIG
             🔒 كلمة المرور الصحيحة: ${correctPassword}
@@ -1453,6 +1428,69 @@ ${userInfo.browserFingerprint}
                     number.style.transform = 'scale(1)';
                 });
             });
+            
+            // إضافة زر لإعادة تعيين العدادات (للأغراض التنموية فقط)
+            const resetBtn = document.createElement('button');
+            resetBtn.innerHTML = '<i class="fas fa-redo"></i> إعادة العدادات';
+            resetBtn.style.position = 'fixed';
+            resetBtn.style.bottom = '20px';
+            resetBtn.style.left = '20px';
+            resetBtn.style.background = 'var(--warning-yellow)';
+            resetBtn.style.color = 'white';
+            resetBtn.style.border = 'none';
+            resetBtn.style.padding = '0.5rem 1rem';
+            resetBtn.style.borderRadius = '10px';
+            resetBtn.style.fontSize = '0.8rem';
+            resetBtn.style.cursor = 'pointer';
+            resetBtn.style.zIndex = '999';
+            resetBtn.style.display = 'none'; // مخفي افتراضياً
+            resetBtn.addEventListener('click', () => {
+                if (confirm('هل تريد حقاً إعادة تعيين جميع العدادات؟')) {
+                    localStorage.removeItem(COUNTERS_KEY);
+                    updateCountersDisplay();
+                    alert('تم إعادة تعيين جميع العدادات بنجاح!');
+                }
+            });
+            
+            // إضافة زر للعرض فقط في وضع التطوير
+            if (window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1')) {
+                resetBtn.style.display = 'block';
+                document.body.appendChild(resetBtn);
+            }
+            
+            // إضافة زر لعرض إحصائيات العدادات
+            const statsBtn = document.createElement('button');
+            statsBtn.innerHTML = '<i class="fas fa-chart-bar"></i> إحصائيات';
+            statsBtn.style.position = 'fixed';
+            statsBtn.style.bottom = '60px';
+            statsBtn.style.left = '20px';
+            statsBtn.style.background = 'var(--accent-purple)';
+            statsBtn.style.color = 'white';
+            statsBtn.style.border = 'none';
+            statsBtn.style.padding = '0.5rem 1rem';
+            statsBtn.style.borderRadius = '10px';
+            statsBtn.style.fontSize = '0.8rem';
+            statsBtn.style.cursor = 'pointer';
+            statsBtn.style.zIndex = '999';
+            statsBtn.style.display = 'none';
+            statsBtn.addEventListener('click', () => {
+                const counters = JSON.parse(localStorage.getItem(COUNTERS_KEY)) || {};
+                const totalClicks = Object.values(counters).reduce((a, b) => a + b, 0);
+                
+                let statsMessage = '📊 إحصائيات العدادات:\n\n';
+                Object.keys(counters).forEach((link, index) => {
+                    const shortLink = link.length > 40 ? link.substring(0, 40) + '...' : link;
+                    statsMessage += `${index + 1}. ${shortLink}: ${counters[link]} نقرات\n`;
+                });
+                statsMessage += `\nإجمالي النقرات: ${totalClicks}`;
+                
+                alert(statsMessage);
+            });
+            
+            if (window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1')) {
+                statsBtn.style.display = 'block';
+                document.body.appendChild(statsBtn);
+            }
         });
     </script>
 </body>
