@@ -1,1235 +1,1710 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ميمز ستيكر - ستيكرات الميمز للواتساب</title>
-    <!-- مكتبة Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- خطوط Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome للأيقونات -->
+    <title>My Cinema | Movie & Series Collection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- مكتبة AOS للحركات -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
     <style>
+        /* ===== CSS VARIABLES ===== */
         :root {
-            --primary-color: #25D366;
-            --secondary-color: #128C7E;
-            --accent-color: #FFD700;
-            --dark-color: #075E54;
-            --light-color: #f8f9fa;
-            --gray-color: #6c757d;
+            --netflix-red: #e50914;
+            --netflix-dark: #0f0f0f;
+            --netflix-darker: #000000;
+            --netflix-gray: #2d2d2d;
+            --netflix-light-gray: #8c8c8c;
+            --netflix-white: #ffffff;
+            --netflix-card-bg: #181818;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        
+
+        /* ===== RESET & BASE STYLES ===== */
         * {
-            font-family: 'Tajawal', 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: #f5f5f5;
-            color: #333;
-            padding-top: 70px;
+            font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--netflix-darker);
+            color: var(--netflix-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary-color) !important;
-        }
-        
-        .nav-link {
-            font-weight: 600;
-        }
-        
-        .hero-section {
-            background: linear-gradient(rgba(7, 94, 84, 0.9), rgba(18, 140, 126, 0.8)), url('https://images.unsplash.com/photo-1611605698323-b1e99cfd37ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 100px 0;
-            border-radius: 0 0 30px 30px;
-        }
-        
-        .sticker-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 25px;
-            height: 100%;
-        }
-        
-        .sticker-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        
-        .sticker-img {
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 200px;
-            object-fit: contain;
-            background-color: #f8f9fa;
-            border-bottom: 3px solid var(--primary-color);
-            padding: 10px;
-        }
-        
-        .sticker-info {
-            padding: 15px;
-        }
-        
-        .sticker-title {
-            font-weight: 700;
-            color: var(--dark-color);
-            margin-bottom: 10px;
-        }
-        
-        .sticker-meta {
-            color: var(--gray-color);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        
-        .btn-whatsapp {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            padding: 8px 20px;
-            border-radius: 50px;
-        }
-        
-        .btn-whatsapp:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-            color: white;
-        }
-        
-        .btn-download {
-            background-color: var(--dark-color);
-            border-color: var(--dark-color);
-            color: white;
-            font-weight: 600;
-            padding: 8px 20px;
-            border-radius: 50px;
-        }
-        
-        .btn-download:hover {
-            background-color: #05433a;
-            border-color: #05433a;
-            color: white;
-        }
-        
-        .category-btn {
-            background: white;
-            border: 2px solid #e0e0e0;
-            color: #555;
-            font-weight: 600;
-            padding: 8px 20px;
-            border-radius: 50px;
-            margin: 0 5px 10px;
-            transition: all 0.3s;
-        }
-        
-        .category-btn:hover, .category-btn.active {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
-        
-        .section-title {
-            position: relative;
-            margin-bottom: 40px;
-            color: var(--dark-color);
-            font-weight: 700;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            right: 0;
-            bottom: -10px;
-            width: 70px;
-            height: 4px;
-            background-color: var(--primary-color);
-            border-radius: 2px;
-        }
-        
-        .section-title.center:after {
-            right: 50%;
-            transform: translateX(50%);
-        }
-        
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 50px 0 20px;
-            margin-top: 50px;
-        }
-        
-        .footer-links a {
-            color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s;
-            display: block;
-            margin-bottom: 8px;
-        }
-        
-        .footer-links a:hover {
-            color: var(--primary-color);
-        }
-        
-        .preview-modal .modal-content {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        
-        .preview-img {
-            width: 100%;
-            max-height: 400px;
-            object-fit: contain;
-            background-color: #f8f9fa;
-        }
-        
-        .sticker-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: var(--accent-color);
-            color: #333;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .sticker-stats {
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            padding: 1.5rem 4%;
+            transition: var(--transition);
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
-            font-size: 0.9rem;
+            align-items: center;
         }
-        
-        .sticker-stats span {
-            color: var(--gray-color);
+
+        .header.scrolled {
+            background-color: var(--netflix-dark);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
         }
-        
-        .sticker-stats i {
-            color: var(--primary-color);
-            margin-left: 5px;
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--netflix-red);
+            text-decoration: none;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
-        .how-to-section {
-            background-color: white;
-            padding: 60px 0;
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--netflix-white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--netflix-red);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--netflix-red);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 30px;
+            padding: 0.8rem 1.5rem;
+            color: var(--netflix-white);
+            font-size: 1rem;
+            width: 300px;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
-        
-        .step-box {
-            text-align: center;
-            padding: 20px;
+
+        .search-box:focus {
+            outline: none;
+            width: 400px;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--netflix-red);
         }
-        
-        .step-icon {
-            background-color: rgba(37, 211, 102, 0.1);
-            width: 80px;
-            height: 80px;
+
+        .search-btn {
+            background: var(--netflix-red);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            transform: scale(1.1);
+            background: #ff0000;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(45deg, var(--netflix-red), #ff6b6b);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 30px;
-            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
         }
-        
-        .sticker-preview-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px;
-            margin-top: 15px;
+
+        .profile-icon:hover {
+            transform: scale(1.1);
         }
-        
-        .sticker-preview-item {
-            width: 100%;
-            height: 70px;
-            object-fit: contain;
-            background-color: #f0f0f0;
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.3)),
+                        url('mov/prison%20break.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 0 4%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 50%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .hero-content {
+            max-width: 700px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+            background: linear-gradient(45deg, #fff, var(--netflix-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: #e0e0e0;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            color: #b0b0b0;
+            font-size: 1.1rem;
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
             border-radius: 8px;
-            padding: 3px;
-            border: 1px solid #ddd;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition);
+            text-decoration: none;
         }
-        
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 60px 0;
+
+        .btn-play {
+            background: var(--netflix-white);
+            color: var(--netflix-dark);
+        }
+
+        .btn-play:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-info {
+            background: rgba(109, 109, 110, 0.7);
+            color: var(--netflix-white);
+        }
+
+        .btn-info:hover {
+            background: rgba(109, 109, 110, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-mylist {
+            background: transparent;
+            color: var(--netflix-white);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-mylist:hover {
+            border-color: var(--netflix-white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-container {
+            background: linear-gradient(to bottom, rgba(15,15,15,0.95), rgba(15,15,15,0.98));
+            padding: 1.5rem 4%;
+            position: sticky;
+            top: 80px;
+            z-index: 900;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-nav {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-nav::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .filter-nav::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .filter-nav::-webkit-scrollbar-thumb {
+            background: var(--netflix-red);
+            border-radius: 10px;
+        }
+
+        .filter-btn {
+            background: var(--netflix-gray);
+            color: var(--netflix-white);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            white-space: nowrap;
+            font-size: 1rem;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active {
+            background: var(--netflix-white);
+            color: var(--netflix-dark);
+        }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            padding: 3rem 4%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--netflix-red);
+        }
+
+        .see-all {
+            color: var(--netflix-red);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .see-all:hover {
+            transform: translateX(5px);
+        }
+
+        /* ===== MOVIE GRID ===== */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 1400px) {
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
-            
-            .sticker-card {
-                margin-bottom: 20px;
-            }
-            
-            .sticker-preview-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
-        
-        /* تأثيرات التحميل */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
+
+        /* ===== MOVIE CARD ===== */
+        .movie-card {
+            background: var(--netflix-card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+
+        .movie-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            z-index: 100;
         }
-        
-        .sticker-count {
-            background-color: var(--primary-color);
+
+        .movie-poster {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+        }
+
+        .movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .movie-card:hover .movie-poster img {
+            transform: scale(1.1);
+        }
+
+        .movie-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%);
+            opacity: 0;
+            transition: var(--transition);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .movie-card:hover .movie-overlay {
+            opacity: 1;
+        }
+
+        .movie-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--netflix-red);
             color: white;
-            border-radius: 20px;
-            padding: 2px 10px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
             font-size: 0.8rem;
             font-weight: 600;
-            margin-right: 5px;
+            z-index: 2;
         }
-        
-        .trending-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ff4757;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.7rem;
+
+        .movie-info-overlay {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 1.5rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .movie-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .movie-meta {
+            display: flex;
+            gap: 1rem;
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-rating {
+            color: #ffd700;
             font-weight: 600;
+        }
+
+        .movie-genres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .genre-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .movie-description {
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+        }
+
+        .action-btn:hover {
+            background: var(--netflix-red);
+            transform: scale(1.1);
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--netflix-dark);
+            max-width: 1200px;
+            margin: 2rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            animation: modalSlide 0.4s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--netflix-red);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, var(--netflix-dark), transparent);
+        }
+
+        .modal-body {
+            padding: 3rem;
+            position: relative;
+            z-index: 2;
+            margin-top: -100px;
+        }
+
+        .modal-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: #b0b0b0;
+            font-size: 1.1rem;
+        }
+
+        .modal-rating {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .modal-year {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+        }
+
+        .modal-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #e0e0e0;
+            max-width: 800px;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .info-item h4 {
+            color: var(--netflix-red);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item p {
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--netflix-darker);
+            padding: 4rem 4% 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--netflix-white);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--netflix-red);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--netflix-red);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #8c8c8c;
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .search-box {
+                width: 250px;
+            }
+            
+            .search-box:focus {
+                width: 300px;
+            }
+            
+            .modal-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-box:focus {
+                width: 100%;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+            
+            .modal-body {
+                padding: 2rem 1.5rem;
+            }
+            
+            .modal-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .movie-poster {
+                height: 250px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- شريط التنقل -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fab fa-whatsapp me-2"></i>ميمز ستيكر
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#home">الرئيسية</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#stickers">الستيكرات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#categories">التصنيفات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#how-to">كيفية الاستخدام</a>
-                    </li>
+    <!-- Header -->
+    <header class="header" id="header">
+        <a href="#" class="logo">
+            <i class="fas fa-film"></i> MYCINEMA
+        </a>
+        
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#movies">Movies</a></li>
+                <li><a href="#series">Series</a></li>
+                <li><a href="#watching">Watching</a></li>
+                <li><a href="#all-content">All Content</a></li>
+            </ul>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" id="searchBox" placeholder="Search movies, series...">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">My Personal Cinema</h1>
+            <div class="hero-meta">
+                <span><i class="fas fa-film"></i> 23 Titles</span>
+                <span><i class="fas fa-eye"></i> 4 Watching</span>
+                <span class="movie-rating"><i class="fas fa-star"></i> 7.8 Avg Rating</span>
+            </div>
+            <p class="hero-description">
+                Your personal collection of movies and TV series. Browse through 23 carefully 
+                selected titles with original posters and descriptions. Updated regularly.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-play" onclick="scrollToSection('watching')">
+                    <i class="fas fa-play"></i> Continue Watching
+                </button>
+                <button class="btn btn-info" onclick="scrollToSection('all-content')">
+                    <i class="fas fa-list"></i> Browse All
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="filter-container">
+        <nav class="filter-nav">
+            <button class="filter-btn active" data-filter="all">All Content</button>
+            <button class="filter-btn" data-filter="watching">Watching Now 👀</button>
+            <button class="filter-btn" data-filter="movie">Movies</button>
+            <button class="filter-btn" data-filter="series">TV Series</button>
+            <button class="filter-btn" data-filter="action">Action</button>
+            <button class="filter-btn" data-filter="drama">Drama</button>
+            <button class="filter-btn" data-filter="crime">Crime</button>
+            <button class="filter-btn" data-filter="sci-fi">Sci-Fi</button>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Currently Watching Section -->
+        <section class="content-section" id="watching">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-eye"></i> Currently Watching 👀
+                </h2>
+                <span class="see-all">4 Titles</span>
+            </div>
+            <div class="movies-grid" id="watchingGrid">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Movies Section -->
+        <section class="content-section" id="movies">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-film"></i> Movies Collection
+                </h2>
+                <span class="see-all">10 Titles</span>
+            </div>
+            <div class="movies-grid" id="moviesGrid">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Series Section -->
+        <section class="content-section" id="series">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-tv"></i> TV Series Collection
+                </h2>
+                <span class="see-all">13 Titles</span>
+            </div>
+            <div class="movies-grid" id="seriesGrid">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+        </section>
+
+        <!-- All Content Section -->
+        <section class="content-section" id="all-content">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-th-list"></i> Complete Library (23 Titles)
+                </h2>
+                <span class="see-all">A-Z</span>
+            </div>
+            <div class="movies-grid" id="allContentGrid">
+                <!-- All content will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Details -->
+    <div class="modal" id="contentModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <img id="modalImage" src="" alt="">
+            </div>
+            <div class="modal-body">
+                <h1 id="modalTitle">Movie Title</h1>
+                <div class="modal-meta">
+                    <span id="modalYear">2024</span>
+                    <span id="modalDuration">2h 30m</span>
+                    <span class="modal-rating" id="modalRating">⭐ 8.5/10</span>
+                    <span id="modalType">Movie</span>
+                </div>
+                <p id="modalDescription" class="modal-description">
+                    Movie description goes here...
+                </p>
+                
+                <div class="modal-info-grid">
+                    <div class="info-item">
+                        <h4>Genre</h4>
+                        <p id="modalGenres">Action, Drama, Sci-Fi</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Director</h4>
+                        <p id="modalDirector">Christopher Nolan</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Status</h4>
+                        <p id="modalStatus">Available</p>
+                    </div>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="btn btn-play" id="modalWatchBtn">
+                        <i class="fas fa-play"></i> Watch Now
+                    </button>
+                    <button class="btn btn-info" id="modalListBtn">
+                        <i class="fas fa-plus"></i> Add to My List
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>My Cinema</h3>
+                <p>Personal movie library with 23 titles. Updated regularly with new additions.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="#" data-filter="action">Action</a></li>
+                    <li><a href="#" data-filter="drama">Drama</a></li>
+                    <li><a href="#" data-filter="crime">Crime</a></li>
+                    <li><a href="#" data-filter="sci-fi">Sci-Fi</a></li>
+                    <li><a href="#" data-filter="thriller">Thriller</a></li>
                 </ul>
-                <div class="d-flex">
-                    <button class="btn btn-outline-dark me-2" onclick="toggleLanguage()">
-                        <i class="fas fa-language me-1"></i> English
-                    </button>
-                    <button class="btn btn-whatsapp" data-bs-toggle="modal" data-bs-target="#shareModal">
-                        <i class="fab fa-whatsapp me-1"></i> مشاركة الموقع
-                    </button>
-                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#movies">Movies</a></li>
+                    <li><a href="#series">TV Series</a></li>
+                    <li><a href="#watching">Watching</a></li>
+                    <li><a href="#all-content">All Content</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Statistics</h3>
+                <ul class="footer-links">
+                    <li><span style="color: #b0b0b0;">Total Titles: 23</span></li>
+                    <li><span style="color: #b0b0b0;">Movies: 10</span></li>
+                    <li><span style="color: #b0b0b0;">Series: 13</span></li>
+                    <li><span style="color: #b0b0b0;">Watching: 4</span></li>
+                </ul>
             </div>
         </div>
-    </nav>
-
-    <!-- قسم البطل -->
-    <section class="hero-section" id="home" data-aos="fade-up">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">أفضل ستيكرات الميمز للواتساب</h1>
-            <p class="lead mb-4">اكتشف مجموعات رائعة من ستيكرات الميمز المضحكة والمميزة لتحسين محادثاتك على واتساب</p>
-            <div class="input-group mb-3 mx-auto" style="max-width: 500px;">
-                <input type="text" class="form-control" placeholder="ابحث عن ستيكر..." id="searchInput">
-                <button class="btn btn-whatsapp" type="button" onclick="searchStickers()">
-                    <i class="fas fa-search me-1"></i> بحث
-                </button>
-            </div>
-            <p class="mb-0">أكثر من <span class="fw-bold text-warning">500</span> ستيكر متاح للتحميل المجاني</p>
-        </div>
-    </section>
-
-    <!-- قسم التصنيفات -->
-    <section class="py-5" id="categories">
-        <div class="container">
-            <h2 class="section-title center" data-aos="fade-up">التصنيفات</h2>
-            <div class="text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-                <button class="category-btn active" data-category="all" onclick="filterStickers('all')">
-                    <span class="sticker-count">48</span> الكل
-                </button>
-                <button class="category-btn" data-category="funny" onclick="filterStickers('funny')">
-                    <span class="sticker-count">12</span> مضحك
-                </button>
-                <button class="category-btn" data-category="animals" onclick="filterStickers('animals')">
-                    <span class="sticker-count">8</span> حيوانات
-                </button>
-                <button class="category-btn" data-category="movies" onclick="filterStickers('movies')">
-                    <span class="sticker-count">6</span> أفلام
-                </button>
-                <button class="category-btn" data-category="arabic" onclick="filterStickers('arabic')">
-                    <span class="sticker-count">10</span> عربي
-                </button>
-                <button class="category-btn" data-category="reactions" onclick="filterStickers('reactions')">
-                    <span class="sticker-count">7</span> ردود فعل
-                </button>
-                <button class="category-btn" data-category="games" onclick="filterStickers('games')">
-                    <span class="sticker-count">5</span> ألعاب
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الستيكرات -->
-    <section class="py-5 bg-light" id="stickers">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">الستيكرات الشائعة</h2>
-            <div class="row" id="stickersContainer">
-                <!-- سيتم تعبئة الستيكرات هنا بالجافاسكريبت -->
-            </div>
-            <div class="text-center mt-5" data-aos="fade-up">
-                <button class="btn btn-whatsapp btn-lg" onclick="loadMoreStickers()">
-                    <i class="fas fa-plus me-1"></i> تحميل المزيد
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم كيفية الاستخدام -->
-    <section class="how-to-section my-5" id="how-to">
-        <div class="container">
-            <h2 class="section-title center" data-aos="fade-up">كيفية إضافة ستيكرات للواتساب</h2>
-            <div class="row text-center">
-                <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="step-box">
-                        <div class="step-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <h4>ابحث عن ستيكر</h4>
-                        <p>تصفح مجموعتنا واختر الستيكر الذي يعجبك</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="step-box">
-                        <div class="step-icon">
-                            <i class="fas fa-download"></i>
-                        </div>
-                        <h4>حمّل الستيكر</h4>
-                        <p>انقر على زر التحميل لحفظ حزمة الستيكر على جهازك</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="step-box">
-                        <div class="step-icon">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <h4>افتح واتساب</h4>
-                        <p>اذهب إلى إعدادات واتساب ثم مدير الستيكرات</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="400">
-                    <div class="step-box">
-                        <div class="step-icon">
-                            <i class="fas fa-folder-plus"></i>
-                        </div>
-                        <h4>أضف الستيكر</h4>
-                        <p>انقر على إضافة ستيكر ثم اختر الملف الذي حملته</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- تذييل الصفحة -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h4 class="mb-3">
-                        <i class="fab fa-whatsapp me-2"></i>ميمز ستيكر
-                    </h4>
-                    <p>أكبر منصة عربية لتحميل ستيكرات الميمز للواتساب. نقدم مجموعات مميزة ومضحكة لتحسين محادثاتك اليومية.</p>
-                    <div class="mt-3">
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-telegram fa-lg"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5 class="mb-3">روابط سريعة</h5>
-                    <div class="footer-links">
-                        <a href="#home">الرئيسية</a>
-                        <a href="#stickers">الستيكرات</a>
-                        <a href="#categories">التصنيفات</a>
-                        <a href="#how-to">كيفية الاستخدام</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5 class="mb-3">التصنيفات</h5>
-                    <div class="footer-links">
-                        <a href="#" onclick="filterStickers('funny')">ستيكرات مضحكة</a>
-                        <a href="#" onclick="filterStickers('arabic')">ستيكرات عربية</a>
-                        <a href="#" onclick="filterStickers('animals')">ستيكرات حيوانات</a>
-                        <a href="#" onclick="filterStickers('movies')">ستيكرات أفلام</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 mb-4">
-                    <h5 class="mb-3">اتصل بنا</h5>
-                    <div class="footer-links">
-                        <p><i class="fas fa-envelope me-2"></i> info@meme-stickers.com</p>
-                        <p><i class="fas fa-phone me-2"></i> +966 500 000 000</p>
-                    </div>
-                </div>
-            </div>
-            <hr class="mt-4 mb-4" style="background-color: #aaa;">
-            <div class="text-center">
-                <p class="mb-0">© 2023 ميمز ستيكر. جميع الحقوق محفوظة.</p>
-            </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 My Personal Cinema. All movie posters are property of their respective owners.</p>
+            <p>This is a personal collection for entertainment purposes only.</p>
         </div>
     </footer>
 
-    <!-- مودال معاينة الستيكر -->
-    <div class="modal fade preview-modal" id="previewModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="previewModalTitle">معاينة الستيكر</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img id="previewImage" class="preview-img mb-3" src="" alt="Sticker Preview">
-                        </div>
-                        <div class="col-md-6">
-                            <h4 id="previewName"></h4>
-                            <p id="previewDescription" class="text-muted"></p>
-                            <div class="mb-3">
-                                <p><i class="fas fa-tag me-1"></i> التصنيف: <span id="previewCategory"></span></p>
-                                <p><i class="fas fa-download me-1"></i> مرات التحميل: <span id="previewDownloads"></span></p>
-                                <p><i class="fas fa-images me-1"></i> عدد الستيكرات: <span id="previewCount"></span></p>
-                            </div>
-                            <div class="mt-4">
-                                <h6>معاينة الستيكرات:</h6>
-                                <div class="sticker-preview-grid" id="previewGrid">
-                                    <!-- ستتم إضافة معاينات الستيكرات هنا -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-                    <button type="button" class="btn btn-download" onclick="downloadSticker()">
-                        <i class="fas fa-download me-1"></i> تحميل حزمة الستيكر
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- مودال المشاركة -->
-    <div class="modal fade" id="shareModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">مشاركة الموقع</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <p class="mb-4">شارك موقعنا مع أصدقائك على واتساب</p>
-                    <button class="btn btn-whatsapp btn-lg w-100 mb-3" onclick="shareViaWhatsApp()">
-                        <i class="fab fa-whatsapp me-2"></i> مشاركة عبر واتساب
-                    </button>
-                    <button class="btn btn-outline-dark btn-lg w-100" onclick="copyLink()">
-                        <i class="fas fa-link me-2"></i> نسخ رابط الموقع
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- المكتبات المطلوبة -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <!-- كود JavaScript المدمج -->
+    <!-- JavaScript -->
     <script>
-        // تهيئة AOS للحركات
-        AOS.init({
-            duration: 800,
-            once: true
-        });
-        
-        // بيانات الستيكرات الحقيقية مع صور ستيكرات فعلية
-        const stickersData = [
-            { 
-                id: 1, 
-                name: "ميمز الضحك اليومي", 
-                category: "funny", 
-                downloads: 1250, 
-                count: 30,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png", 
-                description: "مجموعة من الميمز المضحكة للمحادثات اليومية مع الأصدقاء",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png"
-                ]
-            },
-            { 
-                id: 2, 
-                name: "قطط مضحكة", 
-                category: "animals", 
-                downloads: 980, 
-                count: 25,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png", 
-                description: "قطط مضحكة بتعابير مختلفة تناسب جميع الحالات",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png"
-                ]
-            },
-            { 
-                id: 3, 
-                name: "ردود فعل درامية", 
-                category: "reactions", 
-                downloads: 2100, 
-                count: 35,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png", 
-                description: "ستيكرات لردود الفعل الدرامية في المحادثات",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png"
-                ]
-            },
-            { 
-                id: 4, 
-                name: "ميمز الأفلام الشهيرة", 
-                category: "movies", 
-                downloads: 870, 
-                count: 20,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png", 
-                description: "مقاطع من أفلام شهيرة على شكل ميمز",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png"
-                ]
-            },
-            { 
-                id: 5, 
-                name: "ميمز عربية مضحكة", 
-                category: "arabic", 
-                downloads: 1560, 
-                count: 40,
-                image: "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png", 
-                description: "ميمز باللهجة العربية تناسب جميع الدول العربية",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png"
-                ]
-            },
-            { 
-                id: 6, 
-                name: "شخصيات كرتونية", 
-                category: "funny", 
-                downloads: 1340, 
-                count: 28,
-                image: "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png", 
-                description: "شخصيات كرتونية مضحكة ومحبوبة",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png"
-                ]
-            },
-            { 
-                id: 7, 
-                name: "ميمز ألعاب الفيديو", 
-                category: "games", 
-                downloads: 1100, 
-                count: 22,
-                image: "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png", 
-                description: "ميمز مستوحاة من ألعاب الفيديو الشهيرة",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png"
-                ]
-            },
-            { 
-                id: 8, 
-                name: "ميمز الصداقة", 
-                category: "funny", 
-                downloads: 980, 
-                count: 30,
-                image: "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png", 
-                description: "ميمز عن الصداقة والأصدقاء المضحكين",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png"
-                ]
-            },
-            { 
-                id: 9, 
-                name: "كلاب مضحكة", 
-                category: "animals", 
-                downloads: 760, 
-                count: 18,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png", 
-                description: "كلاب بتعابير مضحكة وجميلة",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png"
-                ]
-            },
-            { 
-                id: 10, 
-                name: "ردود فعل يومية", 
-                category: "reactions", 
-                downloads: 1890, 
-                count: 32,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png", 
-                description: "ردود فعل للمواقف اليومية المختلفة",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png"
-                ]
-            },
-            { 
-                id: 11, 
-                name: "ميمز مسلسلات عربية", 
-                category: "arabic", 
-                downloads: 920, 
-                count: 24,
-                image: "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png", 
-                description: "ميمز من مسلسلات عربية شهيرة",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png"
-                ]
-            },
-            { 
-                id: 12, 
-                name: "ميمز سعودية", 
-                category: "arabic", 
-                downloads: 1430, 
-                count: 35,
-                image: "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png", 
-                description: "ميمز باللهجة السعودية المميزة",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png"
-                ]
-            },
-            { 
-                id: 13, 
-                name: "ميمز العمل", 
-                category: "funny", 
-                downloads: 1120, 
-                count: 26,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png", 
-                description: "ميمز عن العمل والزملاء في المكتب",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png"
-                ]
-            },
-            { 
-                id: 14, 
-                name: "ميمز الحب والرومانسية", 
-                category: "funny", 
-                downloads: 1680, 
-                count: 28,
-                image: "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png", 
-                description: "ميمز مضحكة عن الحب والعلاقات",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521769_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521770_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521771_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/08/04/13/44/meme-6521768_1280.png"
-                ]
-            },
-            { 
-                id: 15, 
-                name: "ميمز الدراسة", 
-                category: "funny", 
-                downloads: 920, 
-                count: 22,
-                image: "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png", 
-                description: "ميمز عن الدراسة والامتحانات",
-                previews: [
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305043_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305050_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/01/meme-6305042_1280.png",
-                    "https://cdn.pixabay.com/photo/2021/06/02/18/02/meme-6305051_1280.png"
-                ]
-            }
-        ];
-        
-        // المتغيرات العامة
-        let currentFilter = 'all';
-        let currentStickerToDownload = null;
-        let visibleStickers = 6;
-        
-        // تحميل الستيكرات عند بدء التشغيل
-        document.addEventListener('DOMContentLoaded', function() {
-            renderStickers();
-            updateCategoryButtons();
-            updateCategoryCounts();
-        });
-        
-        // عرض الستيكرات
-        function renderStickers() {
-            const container = document.getElementById('stickersContainer');
-            container.innerHTML = '';
-            
-            const filteredStickers = currentFilter === 'all' 
-                ? stickersData 
-                : stickersData.filter(sticker => sticker.category === currentFilter);
-            
-            // تحديد عدد الستيكرات المراد عرضها
-            const stickersToShow = filteredStickers.slice(0, visibleStickers);
-            
-            if (stickersToShow.length === 0) {
-                container.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="fas fa-sticker-message fa-4x text-muted mb-3"></i>
-                        <h4 class="text-muted">لا توجد ستيكرات في هذا التصنيف</h4>
-                        <p class="text-muted">حاول البحث في تصنيف آخر</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            stickersToShow.forEach((sticker, index) => {
-                const isTrending = sticker.downloads > 1500;
-                const stickerCard = `
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index % 3 * 100}">
-                        <div class="sticker-card">
-                            <div class="position-relative">
-                                <img src="${sticker.image}" class="sticker-img" alt="${sticker.name}">
-                                <div class="sticker-badge">${getCategoryName(sticker.category)}</div>
-                                ${isTrending ? '<div class="trending-badge">🔥 رائج</div>' : ''}
-                            </div>
-                            <div class="sticker-info">
-                                <h5 class="sticker-title">${sticker.name}</h5>
-                                <p class="sticker-meta">${sticker.description}</p>
-                                <div class="sticker-stats">
-                                    <span><i class="fas fa-download"></i> ${sticker.downloads.toLocaleString()} تحميل</span>
-                                    <span><i class="fas fa-images"></i> ${sticker.count} ستيكر</span>
-                                </div>
-                                <div class="sticker-preview-grid mb-3">
-                                    ${sticker.previews.slice(0, 4).map(preview => `
-                                        <img src="${preview}" class="sticker-preview-item" alt="معاينة">
-                                    `).join('')}
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-outline-dark" onclick="previewSticker(${sticker.id})">
-                                        <i class="fas fa-eye me-1"></i> معاينة
-                                    </button>
-                                    <button class="btn btn-download" onclick="prepareDownload(${sticker.id})">
-                                        <i class="fas fa-download me-1"></i> تحميل
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += stickerCard;
-            });
-        }
-        
-        // تصفية الستيكرات حسب التصنيف
-        function filterStickers(category) {
-            currentFilter = category;
-            visibleStickers = 6;
-            
-            // تحديث أزرار التصنيفات
-            updateCategoryButtons();
-            
-            // إعادة عرض الستيكرات
-            renderStickers();
-            
-            // التمرير إلى قسم الستيكرات
-            document.getElementById('stickers').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // تحديث أزرار التصنيفات النشطة
-        function updateCategoryButtons() {
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                if (btn.getAttribute('data-category') === currentFilter) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
+        // ===== COMPLETE MOVIE LIBRARY WITH LOCAL IMAGES =====
+        const movieLibrary = {
+            // Currently Watching (4 titles)
+            watching: [
+                {
+                    id: 1,
+                    title: "Prison Break",
+                    type: "series",
+                    year: 2005,
+                    rating: 8.3,
+                    duration: "5 Seasons",
+                    genres: ["Action", "Crime", "Drama", "Thriller"],
+                    description: "Michael Scofield engineers an elaborate plan to break his brother Lincoln Burrows out of prison after he's wrongfully convicted of murder.",
+                    image: "mov/prison%20break.jpg",
+                    director: "Paul Scheuring",
+                    status: "Watching 👀 Season 3"
+                },
+                {
+                    id: 2,
+                    title: "Black Mirror",
+                    type: "series",
+                    year: 2011,
+                    rating: 8.8,
+                    duration: "6 Seasons",
+                    genres: ["Drama", "Sci-Fi", "Thriller"],
+                    description: "An anthology series exploring a twisted, high-tech world where humanity's greatest innovations meet its darkest instincts.",
+                    image: "mov/Black%20Mirror.jpg",
+                    director: "Charlie Brooker",
+                    status: "Watching 👀 Season 6"
+                },
+                {
+                    id: 3,
+                    title: "Daredevil",
+                    type: "series",
+                    year: 2015,
+                    rating: 8.6,
+                    duration: "3 Seasons",
+                    genres: ["Action", "Crime", "Drama"],
+                    description: "A blind lawyer by day, vigilante by night. Matt Murdock fights the crime of New York as Daredevil.",
+                    image: "mov/daredevil.jpg",
+                    director: "Drew Goddard",
+                    status: "Watching 👀 Season 3"
+                },
+                {
+                    id: 4,
+                    title: "Inception",
+                    type: "movie",
+                    year: 2010,
+                    rating: 8.8,
+                    duration: "2h 28m",
+                    genres: ["Action", "Sci-Fi", "Thriller"],
+                    description: "A thief who steals corporate secrets through dream-sharing technology is given the task of planting an idea into the mind of a C.E.O.",
+                    image: "mov/inception.jpg",
+                    director: "Christopher Nolan",
+                    status: "Watching 👀"
                 }
-            });
-        }
-        
-        // تحديث أرقام الستيكرات في كل تصنيف
-        function updateCategoryCounts() {
-            const categories = {
-                'all': stickersData.length,
-                'funny': stickersData.filter(s => s.category === 'funny').length,
-                'animals': stickersData.filter(s => s.category === 'animals').length,
-                'movies': stickersData.filter(s => s.category === 'movies').length,
-                'arabic': stickersData.filter(s => s.category === 'arabic').length,
-                'reactions': stickersData.filter(s => s.category === 'reactions').length,
-                'games': stickersData.filter(s => s.category === 'games').length
-            };
-            
-            // تحديث الأرقام في أزرار التصنيفات
-            Object.keys(categories).forEach(category => {
-                const btn = document.querySelector(`.category-btn[data-category="${category}"]`);
-                if (btn) {
-                    const countSpan = btn.querySelector('.sticker-count');
-                    if (countSpan) {
-                        countSpan.textContent = categories[category];
-                    }
+            ],
+
+            // Movies Collection (10 titles)
+            movies: [
+                {
+                    id: 101,
+                    title: "Se7en",
+                    type: "movie",
+                    year: 1995,
+                    rating: 8.6,
+                    duration: "2h 7m",
+                    genres: ["Crime", "Drama", "Mystery"],
+                    description: "Two detectives hunt a serial killer who uses the seven deadly sins as his motives.",
+                    image: "mov/se7en.jpg",
+                    director: "David Fincher",
+                    status: "Available"
+                },
+                {
+                    id: 102,
+                    title: "Interstellar",
+                    type: "movie",
+                    year: 2014,
+                    rating: 8.6,
+                    duration: "2h 49m",
+                    genres: ["Adventure", "Drama", "Sci-Fi"],
+                    description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+                    image: "mov/interstellar.jpg",
+                    director: "Christopher Nolan",
+                    status: "Available"
+                },
+                {
+                    id: 103,
+                    title: "Venom",
+                    type: "movie",
+                    year: 2018,
+                    rating: 6.6,
+                    duration: "1h 52m",
+                    genres: ["Action", "Adventure", "Sci-Fi"],
+                    description: "A failed reporter is bonded to an alien entity, one of many symbiotes who have invaded Earth.",
+                    image: "mov/Venom.jpg",
+                    director: "Ruben Fleischer",
+                    status: "Available"
+                },
+                {
+                    id: 104,
+                    title: "Brothers",
+                    type: "movie",
+                    year: 2009,
+                    rating: 7.1,
+                    duration: "1h 45m",
+                    genres: ["Drama", "Thriller", "War"],
+                    description: "A young man comforts his older brother's wife and children after he goes missing in Afghanistan.",
+                    image: "mov/brothers.jpg",
+                    director: "Jim Sheridan",
+                    status: "Available"
+                },
+                {
+                    id: 105,
+                    title: "Wild Tales",
+                    type: "movie",
+                    year: 2014,
+                    rating: 8.1,
+                    duration: "2h 2m",
+                    genres: ["Comedy", "Drama", "Thriller"],
+                    description: "Six short stories that explore the extremities of human behavior involving people in distress.",
+                    image: "mov/wild%20tales.jpg",
+                    director: "Damián Szifron",
+                    status: "Available"
+                },
+                {
+                    id: 106,
+                    title: "Ballerina",
+                    type: "movie",
+                    year: 2024,
+                    rating: 7.2,
+                    duration: "1h 46m",
+                    genres: ["Action", "Thriller"],
+                    description: "A former bodyguard seeks revenge after her best friend is murdered. She follows the killer to a remote location.",
+                    image: "mov/Ballerina.jpg",
+                    director: "Chad Stahelski",
+                    status: "New Release"
+                },
+                {
+                    id: 107,
+                    title: "Home Alone",
+                    type: "movie",
+                    year: 1990,
+                    rating: 7.7,
+                    duration: "1h 43m",
+                    genres: ["Comedy", "Family"],
+                    description: "An eight-year-old troublemaker must protect his house from a pair of burglars when he is accidentally left home alone.",
+                    image: "mov/Home%20Alone.jpg",
+                    director: "Chris Columbus",
+                    status: "Available"
+                },
+                {
+                    id: 108,
+                    title: "Meg",
+                    type: "movie",
+                    year: 2018,
+                    rating: 6.1,
+                    duration: "1h 53m",
+                    genres: ["Action", "Horror", "Sci-Fi"],
+                    description: "A group of scientists exploring the Marianas Trench encounter a massive attack shark thought to be extinct.",
+                    image: "mov/Meg.jpg",
+                    director: "Jon Turteltaub",
+                    status: "Available"
+                },
+                {
+                    id: 109,
+                    title: "Transformers",
+                    type: "movie",
+                    year: 2007,
+                    rating: 7.0,
+                    duration: "2h 24m",
+                    genres: ["Action", "Adventure", "Sci-Fi"],
+                    description: "An ancient struggle between two Cybertronian races comes to Earth, with a clue to ultimate power held by a teenager.",
+                    image: "mov/Transformers.jpg",
+                    director: "Michael Bay",
+                    status: "Available"
+                },
+                {
+                    id: 110,
+                    title: "Inception",
+                    type: "movie",
+                    year: 2010,
+                    rating: 8.8,
+                    duration: "2h 28m",
+                    genres: ["Action", "Sci-Fi", "Thriller"],
+                    description: "A thief who steals corporate secrets through dream-sharing technology is given the task of planting an idea into the mind of a C.E.O.",
+                    image: "mov/inception.jpg",
+                    director: "Christopher Nolan",
+                    status: "Available"
                 }
-            });
-        }
-        
-        // تحميل المزيد من الستيكرات
-        function loadMoreStickers() {
-            const btn = document.querySelector('#stickers .btn');
-            const originalText = btn.innerHTML;
-            
-            // عرض مؤشر التحميل
-            btn.innerHTML = '<span class="loading me-2"></span> جاري التحميل...';
-            btn.disabled = true;
-            
-            // محاكاة تأخير الشبكة
-            setTimeout(() => {
-                visibleStickers += 3;
-                renderStickers();
-                
-                // إعادة زر التحميل إلى حالته الأصلية
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-                
-                // إخفاء الزر إذا تم عرض كل الستيكرات
-                const filteredStickers = currentFilter === 'all' 
-                    ? stickersData 
-                    : stickersData.filter(sticker => sticker.category === currentFilter);
-                
-                if (visibleStickers >= filteredStickers.length) {
-                    btn.style.display = 'none';
+            ],
+
+            // TV Series Collection (13 titles)
+            series: [
+                {
+                    id: 201,
+                    title: "You",
+                    type: "series",
+                    year: 2018,
+                    rating: 7.7,
+                    duration: "4 Seasons",
+                    genres: ["Crime", "Drama", "Romance"],
+                    description: "A dangerously charming, intensely obsessive young man goes to extreme measures to insert himself into the lives of those he is transfixed by.",
+                    image: "mov/You.jpg",
+                    director: "Greg Berlanti",
+                    status: "Available"
+                },
+                {
+                    id: 202,
+                    title: "Prison Break",
+                    type: "series",
+                    year: 2005,
+                    rating: 8.3,
+                    duration: "5 Seasons",
+                    genres: ["Action", "Crime", "Drama", "Thriller"],
+                    description: "Michael Scofield engineers an elaborate plan to break his brother Lincoln Burrows out of prison after he's wrongfully convicted of murder.",
+                    image: "mov/prison%20break.jpg",
+                    director: "Paul Scheuring",
+                    status: "Available"
+                },
+                {
+                    id: 203,
+                    title: "Dexter",
+                    type: "series",
+                    year: 2006,
+                    rating: 8.6,
+                    duration: "8 Seasons",
+                    genres: ["Crime", "Drama", "Mystery"],
+                    description: "By day, mild-mannered Dexter is a blood-spatter analyst for the Miami police. But at night, he is a serial killer.",
+                    image: "mov/Dexter.jpg",
+                    director: "James Manos Jr.",
+                    status: "Available"
+                },
+                {
+                    id: 204,
+                    title: "Ramy",
+                    type: "series",
+                    year: 2019,
+                    rating: 8.1,
+                    duration: "3 Seasons",
+                    genres: ["Comedy", "Drama"],
+                    description: "Ramy, a first-generation Egyptian-American, is on a spiritual journey in his politically divided New Jersey neighborhood.",
+                    image: "mov/ramy.jpg",
+                    director: "Ramy Youssef",
+                    status: "Available"
+                },
+                {
+                    id: 205,
+                    title: "Black Mirror",
+                    type: "series",
+                    year: 2011,
+                    rating: 8.8,
+                    duration: "6 Seasons",
+                    genres: ["Drama", "Sci-Fi", "Thriller"],
+                    description: "An anthology series exploring a twisted, high-tech world where humanity's greatest innovations meet its darkest instincts.",
+                    image: "mov/Black%20Mirror.jpg",
+                    director: "Charlie Brooker",
+                    status: "Available"
+                },
+                {
+                    id: 206,
+                    title: "Daredevil",
+                    type: "series",
+                    year: 2015,
+                    rating: 8.6,
+                    duration: "3 Seasons",
+                    genres: ["Action", "Crime", "Drama"],
+                    description: "A blind lawyer by day, vigilante by night. Matt Murdock fights the crime of New York as Daredevil.",
+                    image: "mov/daredevil.jpg",
+                    director: "Drew Goddard",
+                    status: "Available"
+                },
+                {
+                    id: 207,
+                    title: "La Casa de Papel",
+                    type: "series",
+                    year: 2017,
+                    rating: 8.2,
+                    duration: "5 Seasons",
+                    genres: ["Action", "Crime", "Mystery"],
+                    description: "An unusual group of robbers attempt to carry out the most perfect robbery in Spanish history.",
+                    image: "mov/la%20casa%20de%20papel.jpg",
+                    director: "Álex Pina",
+                    status: "Available"
+                },
+                {
+                    id: 208,
+                    title: "Squid Game",
+                    type: "series",
+                    year: 2021,
+                    rating: 8.0,
+                    duration: "1 Season",
+                    genres: ["Action", "Drama", "Mystery"],
+                    description: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games for a tempting prize.",
+                    image: "mov/Squid%20Game.jpg",
+                    director: "Hwang Dong-hyuk",
+                    status: "Available"
+                },
+                {
+                    id: 209,
+                    title: "Moon Knight",
+                    type: "series",
+                    year: 2022,
+                    rating: 7.3,
+                    duration: "1 Season",
+                    genres: ["Action", "Adventure", "Fantasy"],
+                    description: "Steven Grant discovers he's been granted the powers of an Egyptian moon god.",
+                    image: "mov/Moon%20Knight.jpg",
+                    director: "Mohamed Diab",
+                    status: "Available"
+                },
+                {
+                    id: 210,
+                    title: "The Queen's Gambit",
+                    type: "series",
+                    year: 2020,
+                    rating: 8.5,
+                    duration: "1 Season",
+                    genres: ["Drama"],
+                    description: "Orphaned chess prodigy Beth Harmon struggles with addiction in a quest to become the world's greatest chess player.",
+                    image: "mov/The%20Queen's%20Gambit.jpg",
+                    director: "Scott Frank",
+                    status: "Available"
+                },
+                {
+                    id: 211,
+                    title: "Loki",
+                    type: "series",
+                    year: 2021,
+                    rating: 8.4,
+                    duration: "2 Seasons",
+                    genres: ["Action", "Adventure", "Fantasy"],
+                    description: "The mercurial villain Loki resumes his role as the God of Mischief in a series that takes place after the events of Avengers: Endgame.",
+                    image: "mov/Loki.jpg",
+                    director: "Kate Herron",
+                    status: "Available"
+                },
+                {
+                    id: 212,
+                    title: "Mr. Robot",
+                    type: "series",
+                    year: 2015,
+                    rating: 8.6,
+                    duration: "4 Seasons",
+                    genres: ["Crime", "Drama", "Thriller"],
+                    description: "Elliot, a brilliant but highly unstable young cyber-security engineer, becomes involved in a hacker organization.",
+                    image: "mov/MR%20Robot.jpg",
+                    director: "Sam Esmail",
+                    status: "Available"
+                },
+                {
+                    id: 213,
+                    title: "Euphoria",
+                    type: "series",
+                    year: 2019,
+                    rating: 8.4,
+                    duration: "2 Seasons",
+                    genres: ["Drama"],
+                    description: "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
+                    image: "mov/Euphoria.jpg",
+                    director: "Sam Levinson",
+                    status: "Available"
                 }
-            }, 800);
-        }
-        
-        // البحث عن الستيكرات
-        function searchStickers() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            if (searchTerm.trim() === '') {
-                renderStickers();
-                return;
-            }
-            
-            const filteredStickers = stickersData.filter(sticker => 
-                sticker.name.toLowerCase().includes(searchTerm) || 
-                sticker.description.toLowerCase().includes(searchTerm) ||
-                getCategoryName(sticker.category).toLowerCase().includes(searchTerm)
-            );
-            
-            const container = document.getElementById('stickersContainer');
-            container.innerHTML = '';
-            
-            if (filteredStickers.length === 0) {
-                container.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="fas fa-search fa-4x text-muted mb-3"></i>
-                        <h4 class="text-muted">لم يتم العثور على نتائج</h4>
-                        <p class="text-muted">حاول البحث بكلمات أخرى</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            filteredStickers.forEach((sticker, index) => {
-                const isTrending = sticker.downloads > 1500;
-                const stickerCard = `
-                    <div class="col-lg-4 col-md-6">
-                        <div class="sticker-card">
-                            <div class="position-relative">
-                                <img src="${sticker.image}" class="sticker-img" alt="${sticker.name}">
-                                <div class="sticker-badge">${getCategoryName(sticker.category)}</div>
-                                ${isTrending ? '<div class="trending-badge">🔥 رائج</div>' : ''}
-                            </div>
-                            <div class="sticker-info">
-                                <h5 class="sticker-title">${sticker.name}</h5>
-                                <p class="sticker-meta">${sticker.description}</p>
-                                <div class="sticker-stats">
-                                    <span><i class="fas fa-download"></i> ${sticker.downloads.toLocaleString()} تحميل</span>
-                                    <span><i class="fas fa-images"></i> ${sticker.count} ستيكر</span>
+            ]
+        };
+
+        // ===== DOM MANIPULATION FUNCTIONS =====
+        function createMovieCard(item) {
+            return `
+                <div class="movie-card" data-id="${item.id}" data-type="${item.type}" data-genres="${item.genres ? item.genres.join(',') : ''}">
+                    ${item.status && item.status.includes('👀') ? '<div class="movie-badge">👀</div>' : ''}
+                    ${item.status && item.status.includes('New') ? '<div class="movie-badge" style="background: #00b894;">NEW</div>' : ''}
+                    <div class="movie-poster">
+                        <img src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x450/333/666?text=No+Image'">
+                        <div class="movie-overlay">
+                            <div class="movie-info-overlay">
+                                <h3 class="movie-title">${item.title}</h3>
+                                <div class="movie-meta">
+                                    <span>${item.year}</span>
+                                    <span>${item.duration}</span>
+                                    <span class="movie-rating">⭐ ${item.rating}</span>
                                 </div>
-                                <div class="sticker-preview-grid mb-3">
-                                    ${sticker.previews.slice(0, 4).map(preview => `
-                                        <img src="${preview}" class="sticker-preview-item" alt="معاينة">
-                                    `).join('')}
+                                <div class="movie-genres">
+                                    ${item.genres ? item.genres.map(genre => `<span class="genre-tag">${genre}</span>`).join('') : ''}
                                 </div>
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-outline-dark" onclick="previewSticker(${sticker.id})">
-                                        <i class="fas fa-eye me-1"></i> معاينة
+                                <p class="movie-description">${item.description}</p>
+                                <div class="movie-actions">
+                                    <button class="action-btn" onclick="event.stopPropagation(); openModal(${item.id}, '${item.type}')">
+                                        <i class="fas fa-play"></i>
                                     </button>
-                                    <button class="btn btn-download" onclick="prepareDownload(${sticker.id})">
-                                        <i class="fas fa-download me-1"></i> تحميل
+                                    <button class="action-btn" onclick="event.stopPropagation(); addToList(${item.id})">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `;
-                container.innerHTML += stickerCard;
-            });
-        }
-        
-        // معاينة الستيكر
-        function previewSticker(id) {
-            const sticker = stickersData.find(s => s.id === id);
-            if (!sticker) return;
-            
-            document.getElementById('previewImage').src = sticker.image;
-            document.getElementById('previewName').textContent = sticker.name;
-            document.getElementById('previewDescription').textContent = sticker.description;
-            document.getElementById('previewCategory').textContent = getCategoryName(sticker.category);
-            document.getElementById('previewDownloads').textContent = sticker.downloads.toLocaleString();
-            document.getElementById('previewCount').textContent = sticker.count;
-            
-            // عرض معاينات الستيكرات
-            const previewGrid = document.getElementById('previewGrid');
-            previewGrid.innerHTML = '';
-            
-            sticker.previews.forEach(preview => {
-                const img = document.createElement('img');
-                img.src = preview;
-                img.className = 'sticker-preview-item';
-                img.alt = 'معاينة ستيكر';
-                previewGrid.appendChild(img);
-            });
-            
-            currentStickerToDownload = sticker;
-            
-            const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
-            previewModal.show();
-        }
-        
-        // تحضير الستيكر للتحميل
-        function prepareDownload(id) {
-            const sticker = stickersData.find(s => s.id === id);
-            if (!sticker) return;
-            
-            currentStickerToDownload = sticker;
-            
-            // زيادة عدد مرات التحميل
-            sticker.downloads++;
-            
-            // تحديث عرض عدد التحميلات
-            updateStickerDownloadCount(id, sticker.downloads);
-            
-            // محاكاة عملية التحميل
-            simulateDownload(sticker);
-        }
-        
-        // تحميل الستيكر (من نافذة المعاينة)
-        function downloadSticker() {
-            if (!currentStickerToDownload) return;
-            
-            // زيادة عدد مرات التحميل
-            currentStickerToDownload.downloads++;
-            
-            // تحديث عرض عدد التحميلات
-            updateStickerDownloadCount(currentStickerToDownload.id, currentStickerToDownload.downloads);
-            
-            // إغلاق المودال
-            const modal = bootstrap.Modal.getInstance(document.getElementById('previewModal'));
-            modal.hide();
-            
-            // محاكاة عملية التحميل
-            simulateDownload(currentStickerToDownload);
-        }
-        
-        // تحديث عدد التحميلات المعروض للستيكر
-        function updateStickerDownloadCount(id, newCount) {
-            // تحديث في العرض الحالي
-            const downloadSpans = document.querySelectorAll(`[data-sticker-id="${id}"] .download-count`);
-            downloadSpans.forEach(span => {
-                span.textContent = newCount.toLocaleString();
-            });
-            
-            // تحديث في حالة البحث
-            const statsSpans = document.querySelectorAll('.sticker-stats span:first-child');
-            statsSpans.forEach(span => {
-                if (span.textContent.includes(newCount - 1)) {
-                    span.innerHTML = `<i class="fas fa-download"></i> ${newCount.toLocaleString()} تحميل`;
-                }
-            });
-        }
-        
-        // محاكاة عملية التحميل
-        function simulateDownload(sticker) {
-            // عرض رسالة تأكيد
-            showAlert('info', 'جاري التحميل', `جاري تحميل حزمة ${sticker.name}...`);
-            
-            // في هذا المثال، سنقوم فقط بعرض رسالة
-            setTimeout(() => {
-                showAlert('success', 'اكتمل التحميل!', `تم تحميل ${sticker.name} بنجاح. يمكنك الآن إضافته إلى واتساب.`);
-                
-                // تقديم رابط تحميل حقيقي (محاكاة)
-                const downloadLink = document.createElement('a');
-                downloadLink.href = '#';
-                downloadLink.download = `${sticker.name.replace(/\s+/g, '_')}_stickers.zip`;
-                downloadLink.click();
-            }, 1500);
-        }
-        
-        // مشاركة عبر واتساب
-        function shareViaWhatsApp() {
-            const text = "اكتشف أفضل ستيكرات الميمز للواتساب على موقع ميمز ستيكر!";
-            const url = window.location.href;
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-            
-            window.open(whatsappUrl, '_blank');
-            
-            // إغلاق المودال
-            const modal = bootstrap.Modal.getInstance(document.getElementById('shareModal'));
-            modal.hide();
-        }
-        
-        // نسخ رابط الموقع
-        function copyLink() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                showAlert('success', 'تم النسخ!', 'تم نسخ رابط الموقع بنجاح.');
-                
-                // إغلاق المودال
-                const modal = bootstrap.Modal.getInstance(document.getElementById('shareModal'));
-                modal.hide();
-            });
-        }
-        
-        // تبديل اللغة
-        function toggleLanguage() {
-            const isArabic = document.documentElement.lang === 'ar';
-            
-            if (isArabic) {
-                // التبديل إلى الإنجليزية
-                document.documentElement.lang = 'en';
-                document.documentElement.dir = 'ltr';
-                document.title = 'Meme Stickers - WhatsApp Meme Stickers';
-                document.querySelector('.navbar-brand').innerHTML = '<i class="fab fa-whatsapp me-2"></i>Meme Stickers';
-                
-                // تحديث النصوص الرئيسية
-                document.querySelector('.hero-section h1').textContent = 'Best WhatsApp Meme Stickers';
-                document.querySelector('.hero-section p.lead').textContent = 'Discover amazing collections of funny and unique meme stickers to enhance your WhatsApp conversations';
-                document.querySelector('#searchInput').placeholder = 'Search for stickers...';
-                
-                // تحديث النصوص الأخرى هنا في تطبيق حقيقي
-                showAlert('info', 'Language changed', 'Site language changed to English');
-            } else {
-                // التبديل إلى العربية
-                document.documentElement.lang = 'ar';
-                document.documentElement.dir = 'rtl';
-                document.title = 'ميمز ستيكر - ستيكرات الميمز للواتساب';
-                document.querySelector('.navbar-brand').innerHTML = '<i class="fab fa-whatsapp me-2"></i>ميمز ستيكر';
-                
-                // تحديث النصوص الرئيسية
-                document.querySelector('.hero-section h1').textContent = 'أفضل ستيكرات الميمز للواتساب';
-                document.querySelector('.hero-section p.lead').textContent = 'اكتشف مجموعات رائعة من ستيكرات الميمز المضحكة والمميزة لتحسين محادثاتك على واتساب';
-                document.querySelector('#searchInput').placeholder = 'ابحث عن ستيكر...';
-                
-                showAlert('info', 'تم تغيير اللغة', 'تم تغيير لغة الموقع إلى العربية');
-            }
-        }
-        
-        // عرض رسالة تنبيه
-        function showAlert(type, title, message) {
-            // إزالة أي تنبيهات سابقة
-            const existingAlerts = document.querySelectorAll('.alert.position-fixed');
-            existingAlerts.forEach(alert => alert.remove());
-            
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-            alertDiv.style.cssText = 'top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: 500px;';
-            alertDiv.innerHTML = `
-                <strong>${title}</strong> ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
             `;
-            
-            document.body.appendChild(alertDiv);
-            
-            // إزالة التنبيه تلقائياً بعد 5 ثوان
-            setTimeout(() => {
-                if (alertDiv.parentNode) {
-                    alertDiv.remove();
-                }
-            }, 5000);
         }
-        
-        // الحصول على اسم التصنيف بالعربية
-        function getCategoryName(category) {
-            const categories = {
-                'all': 'الكل',
-                'funny': 'مضحك',
-                'animals': 'حيوانات',
-                'movies': 'أفلام',
-                'arabic': 'عربي',
-                'reactions': 'ردود فعل',
-                'games': 'ألعاب',
-                'cartoon': 'كرتون'
+
+        function loadContent() {
+            // Clear all grids first
+            document.getElementById('watchingGrid').innerHTML = '';
+            document.getElementById('moviesGrid').innerHTML = '';
+            document.getElementById('seriesGrid').innerHTML = '';
+            document.getElementById('allContentGrid').innerHTML = '';
+            
+            // Load watching content
+            movieLibrary.watching.forEach(item => {
+                document.getElementById('watchingGrid').innerHTML += createMovieCard(item);
+            });
+
+            // Load movies
+            movieLibrary.movies.forEach(item => {
+                document.getElementById('moviesGrid').innerHTML += createMovieCard(item);
+            });
+
+            // Load series
+            movieLibrary.series.forEach(item => {
+                document.getElementById('seriesGrid').innerHTML += createMovieCard(item);
+            });
+
+            // Load all content
+            const allContent = [...movieLibrary.watching, ...movieLibrary.movies, ...movieLibrary.series];
+            allContent.forEach(item => {
+                document.getElementById('allContentGrid').innerHTML += createMovieCard(item);
+            });
+
+            // Add click events to all cards
+            document.querySelectorAll('.movie-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.action-btn')) {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        const type = this.getAttribute('data-type');
+                        openModal(id, type);
+                    }
+                });
+            });
+        }
+
+        function openModal(id, type) {
+            // Find item in appropriate category
+            let item = null;
+            
+            // Check watching
+            item = movieLibrary.watching.find(i => i.id === id);
+            
+            // Check movies
+            if (!item) {
+                item = movieLibrary.movies.find(i => i.id === id);
+            }
+            
+            // Check series
+            if (!item) {
+                item = movieLibrary.series.find(i => i.id === id);
+            }
+            
+            if (!item) return;
+            
+            // Update modal content
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalYear').textContent = item.year;
+            document.getElementById('modalDuration').textContent = item.duration;
+            document.getElementById('modalRating').textContent = `⭐ ${item.rating}/10`;
+            document.getElementById('modalType').textContent = item.type === 'movie' ? 'Movie' : 'TV Series';
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalGenres').textContent = item.genres ? item.genres.join(', ') : 'Various';
+            document.getElementById('modalDirector').textContent = item.director || 'Various Directors';
+            document.getElementById('modalStatus').textContent = item.status || 'Available';
+            
+            // Update button actions
+            document.getElementById('modalWatchBtn').onclick = function() {
+                alert(`Now playing: ${item.title}`);
             };
             
-            return categories[category] || category;
+            document.getElementById('modalListBtn').onclick = function() {
+                addToList(item.id);
+            };
+            
+            // Show modal
+            document.getElementById('contentModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
-        
-        // السماح بالبحث عند الضغط على Enter
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchStickers();
+
+        function closeModal() {
+            document.getElementById('contentModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function filterContent(filter) {
+            const allCards = document.querySelectorAll('.movie-card');
+            
+            allCards.forEach(card => {
+                const type = card.getAttribute('data-type');
+                const genres = card.getAttribute('data-genres').toLowerCase();
+                const isWatching = card.querySelector('.movie-badge')?.textContent === '👀';
+                
+                let shouldShow = false;
+                
+                switch(filter) {
+                    case 'all':
+                        shouldShow = true;
+                        break;
+                    case 'watching':
+                        shouldShow = isWatching;
+                        break;
+                    case 'movie':
+                        shouldShow = type === 'movie';
+                        break;
+                    case 'series':
+                        shouldShow = type === 'series';
+                        break;
+                    default:
+                        shouldShow = genres.includes(filter.toLowerCase());
+                }
+                
+                card.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+
+        function searchContent(query) {
+            const allCards = document.querySelectorAll('.movie-card');
+            const searchTerm = query.toLowerCase();
+            
+            if (!searchTerm) {
+                allCards.forEach(card => card.style.display = 'block');
+                return;
             }
+            
+            allCards.forEach(card => {
+                const title = card.querySelector('.movie-title').textContent.toLowerCase();
+                const description = card.querySelector('.movie-description')?.textContent.toLowerCase() || '';
+                const genres = card.getAttribute('data-genres').toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm) || genres.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function addToList(id) {
+            alert('Added to your watchlist!');
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load all content
+            loadContent();
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Modal close
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('contentModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+            
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterContent(this.getAttribute('data-filter'));
+                });
+            });
+            
+            // Footer filter links
+            document.querySelectorAll('.footer-links a[data-filter]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const filter = this.getAttribute('data-filter');
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelector(`.filter-btn[data-filter="${filter}"]`)?.classList.add('active');
+                    filterContent(filter);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+            
+            // Search functionality
+            const searchBox = document.getElementById('searchBox');
+            const searchBtn = document.getElementById('searchBtn');
+            
+            searchBox.addEventListener('input', function() {
+                searchContent(this.value);
+            });
+            
+            searchBtn.addEventListener('click', function() {
+                searchContent(searchBox.value);
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeModal();
+                if (e.ctrlKey && e.key === 'k') {
+                    e.preventDefault();
+                    searchBox.focus();
+                }
+            });
+            
+            // Initialize with all content showing
+            filterContent('all');
         });
     </script>
 </body>
