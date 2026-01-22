@@ -666,8 +666,7 @@
         
         // Base URLs for images
         const BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPOSITORY_NAME}/${BRANCH_NAME}`;
-        const MAIN_IMAGES_FOLDER = 'Picture';
-        const RELATED_IMAGES_FOLDER = 'Related images';
+        const MAIN_IMAGES_FOLDER = 'Picture'; // مجلد الصور الرئيسية
         
         // Image data - Edit titles and locations as needed
         const imageData = [
@@ -747,11 +746,6 @@
         // Function to build main image URL
         function getMainImageUrl(imageId) {
             return `${BASE_URL}/${MAIN_IMAGES_FOLDER}/${imageId}.jpg`;
-        }
-
-        // Function to build related image URL
-        function getRelatedImageUrl(imageId, relatedId) {
-            return `${BASE_URL}/${RELATED_IMAGES_FOLDER}/${imageId}/${relatedId}.jpg`;
         }
 
         // Function to check if image exists
@@ -840,14 +834,14 @@
                     }
                 });
                 
-                // Add click event to open related images
+                // Add click event to open related images (simplified version)
                 galleryItem.addEventListener('click', () => openRelatedView(image));
                 
                 galleryGrid.appendChild(galleryItem);
             });
         }
 
-        // Open related images view
+        // Open related images view (simplified version for GitHub images)
         function openRelatedView(image) {
             // Hide all gallery items except the clicked one
             document.querySelectorAll('.gallery-item').forEach(item => {
@@ -862,7 +856,7 @@
             mainImage.src = getMainImageUrl(image.id);
             mainImage.alt = image.title;
             
-            // Clear previous related images
+            // Clear previous related images (simplified for GitHub)
             relatedImagesContainer.innerHTML = '';
             
             // Calculate circle positions
@@ -871,25 +865,24 @@
             const centerY = window.innerHeight / 2;
             const angleStep = (2 * Math.PI) / image.relatedCount;
             
-            // Add related images in a circle
+            // Since we don't have related images in GitHub, we'll show message
             for (let i = 1; i <= image.relatedCount; i++) {
                 const angle = (i - 1) * angleStep;
-                const x = centerX + radius * Math.cos(angle) - 90; // 90 is half of image width
-                const y = centerY + radius * Math.sin(angle) - 90; // 90 is half of image height
+                const x = centerX + radius * Math.cos(angle) - 90;
+                const y = centerY + radius * Math.sin(angle) - 90;
                 
-                const imgElement = document.createElement('img');
+                const imgElement = document.createElement('div');
                 imgElement.className = 'related-image';
-                imgElement.src = getRelatedImageUrl(image.id, i);
-                imgElement.alt = `Related image ${i} for ${image.title}`;
                 imgElement.style.left = `${x}px`;
                 imgElement.style.top = `${y}px`;
                 imgElement.style.transitionDelay = `${0.1 * i}s`;
-                
-                // Add error handling for related images
-                imgElement.onerror = () => {
-                    imgElement.style.display = 'none';
-                    console.warn(`Related image not found: ${imgElement.src}`);
-                };
+                imgElement.style.display = 'flex';
+                imgElement.style.alignItems = 'center';
+                imgElement.style.justifyContent = 'center';
+                imgElement.style.backgroundColor = 'rgba(255, 58, 58, 0.1)';
+                imgElement.style.color = '#aaa';
+                imgElement.style.fontSize = '0.8rem';
+                imgElement.innerHTML = `Related ${i}`;
                 
                 relatedImagesContainer.appendChild(imgElement);
                 
@@ -959,9 +952,12 @@
                 });
             }, { threshold: 0.1 });
             
-            document.querySelectorAll('.gallery-item').forEach(item => {
-                observer.observe(item);
-            });
+            // Observe gallery items after they are loaded
+            setTimeout(() => {
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    observer.observe(item);
+                });
+            }, 1000);
         }
 
         // Set up back to top button
